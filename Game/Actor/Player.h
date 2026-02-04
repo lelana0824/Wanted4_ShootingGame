@@ -17,6 +17,8 @@ private:
 
 	void MoveRight();
 	void MoveLeft();
+
+	void Fire();
 private:
 };
 
