@@ -4,12 +4,16 @@
 #include "Actor/PlayerBullet.h"
 #include "Level/Level.h"
 
-Player::Player(): super("<-=A=->", Vector2::Zero, Color::Red)
+Player::Player()
+	: super("<-=A=->", Vector2::Zero, Color::Red)
+	, fireMode(FireMode::OneShot)
 {
 	int xPosition = (Engine::Get().GetWidth() / 2) - (width / 2);
 	int yPosition = Engine::Get().GetHeight() - 3;
 	
 	this->SetPosition(Vector2(xPosition, yPosition));
+
+	timer.SetTargetTime(0.2f);
 }
 
 Player::~Player()
@@ -25,6 +29,9 @@ void Player::Tick(float deltaTime)
 		QuitGame();
 	}
 
+	// 경과 시간 업데이트
+	timer.Tick(deltaTime);
+
 
 	// 입력 및 이동처리
 	if (Input::Get().GetKey(VK_LEFT))
@@ -36,10 +43,28 @@ void Player::Tick(float deltaTime)
 		MoveRight();
 	}
 
-	// 액터 생성
-	if (Input::Get().GetKeyDown(VK_SPACE))
+	if (fireMode == FireMode::OneShot)
 	{
-		Fire();
+		if (Input::Get().GetKeyDown(VK_SPACE))
+		{
+			Fire();
+		}
+
+	}
+	else if (fireMode == FireMode::Repeat)
+	{
+		if (Input::Get().GetKey(VK_SPACE))
+		{
+			FireInterval();
+		}
+	}
+
+	// 발사 모드 전환
+	if (Input::Get().GetKeyDown('R'))
+	{
+		fireMode = static_cast<FireMode>(
+			1 - static_cast<int>(fireMode)
+		);
 	}
 }
 
@@ -69,6 +94,8 @@ void Player::MoveLeft()
 
 void Player::Fire()
 {
+	timer.Reset();
+
 	// 위치 설정
 	Vector2 bulletPosition(
 		position.x + (width / 2),
@@ -76,4 +103,16 @@ void Player::Fire()
 	);
 
 	GetOwner()->AddNewActor(new PlayerBullet(bulletPosition));
+}
+
+void Player::FireInterval()
+{
+	if (!CanShoot()) return;
+
+	Fire();
+}
+
+bool Player::CanShoot() const
+{
+	return timer.IsTimeOut();
 }

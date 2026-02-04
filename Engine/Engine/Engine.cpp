@@ -25,6 +25,8 @@ namespace Wanted
 
 		Util::SetConsoleTextColor(Color::Green);
 		Util::TurnOffCursor();
+
+		Util::SetRandomSeed();
 	}
 
 	Engine::~Engine()
