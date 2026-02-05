@@ -8,6 +8,8 @@ class Enemy : public Actor
 {
 	RTTI_DECLARATIONS(Enemy, Actor)
 
+
+protected:
 	// 이동 방향 열거형.
 	enum class MoveDirection
 	{
@@ -17,14 +19,14 @@ class Enemy : public Actor
 	};
 
 public:
-	Enemy(const char* image = ">@<", int yPosition = 5);
+	Enemy(const char* image = "@", int yPosition = 5);
+	Enemy(const char* image = "@", Vector2 position = Vector2::Zero);
 	~Enemy();
 
 	virtual void Tick(float deltaTime) override;
+	virtual void OnDamaged();
 
-	void OnDamaged();
-
-private:
+protected:
 	MoveDirection direction = MoveDirection::None;
 
 	float xPosition = 0.0f;

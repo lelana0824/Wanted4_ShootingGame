@@ -82,6 +82,21 @@ namespace Util
 		float diff = (max - min);
 		return (random * diff) + min;
 	}
+
+	template<typename T>
+	T Clamp(T value, T min, T max)
+	{
+		if (value < min)
+		{
+			value = min;
+		}
+		else if (value > max)
+		{
+			value = max;
+		}
+
+		return value;
+	}
 }
 
 template<typename T>

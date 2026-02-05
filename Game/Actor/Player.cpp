@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Actor/PlayerBullet.h"
 #include "Level/Level.h"
+#include "Render/Renderer.h"
 
 Player::Player()
 	: super("<-=A=->", Vector2::Zero, Color::Red)

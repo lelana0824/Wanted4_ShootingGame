@@ -1,5 +1,5 @@
 #include "EnemySpawner.h"
-#include "Actor/Enemy.h"
+#include "Actor/SmallEnemy.h"
 #include "Util/Util.h"
 #include "Level/Level.h"
 
@@ -45,6 +45,6 @@ void EnemySpawner::SpawnEnemy(float deltaTime)
 
 	int yPosition = Util::Random(1, 10);
 
-	GetOwner()->AddNewActor(new Enemy(enemyType[index], yPosition));
+	GetOwner()->AddNewActor(new SmallEnemy(enemyType[index], yPosition));
 
 }

@@ -84,6 +84,15 @@ namespace Wanted
 		return position.y == other->position.y;
 	}
 
+	void Actor::ChangeImage(const char* newImage)
+	{
+		SafeDeleteArray(image);
+
+		width = static_cast<int>(strlen(newImage));
+		image = new char[width + 1];
+		strcpy_s(image, width + 1, newImage);
+	}
+
 	void Actor::SetPosition(const Vector2& newPosition)
 	{
 		// 변경하려는 위치가 현재 위치와 같으면 건너뜀.

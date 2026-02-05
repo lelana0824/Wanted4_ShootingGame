@@ -1,5 +1,6 @@
 #pragma once
 #include "Common/Common.h"
+#include "Math/Vector2.h"
 
 namespace Wanted
 {
@@ -32,7 +33,15 @@ namespace Wanted
 		// 눌려있음
 		bool GetKey(int keyCode);
 
+		bool GetMouseButtonDown(int buttonCode);
+
+		bool GetMouseButtonUp(int buttonCode);
+
+		bool GetMouseButton(int buttonCode);
+
 		static Input& Get();
+
+		inline Vector2 MousePosition() const { return mousePosition;  }
 	private:
 		void ProcessInput();
 
@@ -42,6 +51,8 @@ namespace Wanted
 	private:
 		// 키 상태 저장용 배열.
 		KeyState keyStates[255] = {};
+
+		Vector2 mousePosition;
 
 		// 전역적으로 접근하도록 만들기 위한 전역 변수
 		static Input* instance;

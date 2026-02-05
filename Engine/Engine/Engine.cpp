@@ -102,6 +102,18 @@ namespace Wanted
 				{
 					mainLevel->ProcessAddAndDestroyActors();
 				}
+
+				if (nextLevel)
+				{
+					// 기존 레벨 제거.
+					SafeDelete(mainLevel);
+
+					// 전환할 레벨을 메인 레벨로 지정.
+					mainLevel = nextLevel;
+
+					// 포인터 정리.
+					nextLevel = nullptr;
+				}
 			}
 			
 		}
@@ -116,14 +128,7 @@ namespace Wanted
 
 	void Engine::SetNewLevel(Level* newLevel)
 	{
-		// todo: 임시 코드. 레벨 전환 시 바로 제거 x
-		if (mainLevel) {
-			delete mainLevel;
-			mainLevel = nullptr;
-		}
-
-		// set level
-		mainLevel = newLevel;
+		nextLevel = newLevel;
 	}
 
 	Engine& Engine::Get()
@@ -200,10 +205,7 @@ namespace Wanted
 
 	void Engine::Tick(float deltaTime)
 	{
-		//std::cout << "DeltaTime: " << deltaTime
-		//	<< ", FPS: " << (1.0f / deltaTime) << "\n";
-
-		// event to level
+		
 
 		if (!mainLevel)
 		{

@@ -1,6 +1,10 @@
 #include "Input.h"
+#include "Engine/Engine.h"
+#include "Util/Util.h"
+
 #include <Windows.h>
 #include <iostream>
+#include <cassert>
 
 namespace Wanted
 {
@@ -36,6 +40,56 @@ namespace Wanted
 	{
 		return keyStates[keyCode].isKeyDown;
 	}
+	bool Input::GetMouseButtonDown(int buttonCode)
+	{
+		assert(buttonCode == 0 || buttonCode == 1);
+
+		int keyCode = 0;
+		if (buttonCode == 0)
+		{
+			keyCode = VK_LBUTTON;
+		}
+		else if (buttonCode == 1)
+		{
+			keyCode = VK_RBUTTON;
+		}
+
+		return keyStates[keyCode].isKeyDown
+			&& !keyStates[keyCode].wasKeyDown;;
+	}
+	bool Input::GetMouseButtonUp(int buttonCode)
+	{
+		assert(buttonCode == 0 || buttonCode == 1);
+
+		int keyCode = 0;
+		if (buttonCode == 0)
+		{
+			keyCode = VK_LBUTTON;
+		}
+		else if (buttonCode == 1)
+		{
+			keyCode = VK_RBUTTON;
+		}
+
+		return !keyStates[keyCode].isKeyDown
+			&& keyStates[keyCode].wasKeyDown;
+	}
+	bool Input::GetMouseButton(int buttonCode)
+	{
+		assert(buttonCode == 0 || buttonCode == 1);
+
+		int keyCode = 0;
+		if (buttonCode == 0)
+		{
+			keyCode = VK_LBUTTON;
+		}
+		else if (buttonCode == 1)
+		{
+			keyCode = VK_RBUTTON;
+		}
+
+		return keyStates[keyCode].isKeyDown;
+	}
 	Input& Input::Get()
 	{
 		// 싱글턴(Singleton). 프로젝트에서 객체가 1개만 존재
@@ -54,12 +108,10 @@ namespace Wanted
 	}
 	void Input::ProcessInput()
 	{
-		// 키 마다의 입력 읽기.
-		// 운영체제가 제공하는 기능을 사용할수 밖에 없음.
-		for (int i = 0; i < 255; i++)
+		for (int ix = 0; ix < 255; ++ix)
 		{
-			keyStates[i].isKeyDown
-				= (GetAsyncKeyState(i) & 0x8000) > 0 ? true : false;
+			keyStates[ix].isKeyDown
+				= (GetAsyncKeyState(ix) & 0x8000) > 0 ? true : false;
 		}
 	}
 	void Input::SavePreviousInputStates()

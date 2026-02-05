@@ -66,6 +66,9 @@ namespace Wanted
 		// main level
 		class Level* mainLevel = nullptr;
 
+		// 전환할 레벨을 임시 저장하는 변수.
+		class Level* nextLevel = nullptr;
+
 		static Engine* instance;
 		
 	};
