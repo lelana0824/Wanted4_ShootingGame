@@ -27,7 +27,7 @@ GameLevel::GameLevel()
 	file.close();;
 
 	AddNewActor(new Player());
-	//AddNewActor(new EnemySpawner());
+	AddNewActor(new EnemySpawner());
 	AddNewActor(new UltraEnemy(buffer.str().c_str()));
 }
 
@@ -170,13 +170,10 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 
 			if (health <= 0)
 			{
-				// 플레이어 죽음 설정.
 				isPlayerDead = true;
 
-				// 죽은 위치 저장.
 				playerDeadPosition = player->GetPosition();
 
-				// 액터 제거 처리.
 				player->Destroy();
 				break;
 			}
@@ -189,7 +186,7 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 {
 	Player* player = nullptr;
-	std::vector<Actor*> enemies;
+	std::vector<Enemy*> enemies;
 
 	for (Actor* const actor : actors)
 	{
@@ -206,7 +203,7 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 
 		if (actor->IsTypeOf<Enemy>())
 		{
-			enemies.emplace_back(actor);
+			enemies.emplace_back(actor->As<Enemy>());
 		}
 	}
 
@@ -217,34 +214,31 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 
 
 	// 충돌판정.
-	for (Actor* const enemy : enemies)
+	for (Enemy* const enemy : enemies)
 	{
-		if (enemy->TestIntersect(player))
+		if (enemy->GetCanHitOtherActor())
 		{
-			health -= 1;
-
-			if (health <= 0)
+			if (enemy->TestIntersect(player))
 			{
-				// 플레이어 죽음 설정.
-				isPlayerDead = true;
+				health -= 1;
 
-				// 죽은 위치 저장.
-				playerDeadPosition = player->GetPosition();
+				if (health <= 0)
+				{
+					isPlayerDead = true;
 
-				// 액터 제거 처리.
-				player->Destroy();
-				break;
+					playerDeadPosition = player->GetPosition();
+
+					player->Destroy();
+					break;
+				}
 			}
-
-			// 총알은 바로 사라지지면 몸체는 사라지지 않기 떄문에 방안필요.
-			//bullet->Destroy();
 		}
 	}
 }
 
 void GameLevel::ShowScore()
 {
-	sprintf_s(scoreString, 128, "Score: %d", score);
+	sprintf_s(scoreString, 128, "Score: %d    Health: %d", score, health);
 	Renderer::Get().Submit(
 		scoreString,
 		Vector2(0, Engine::Get().GetHeight() - 1)

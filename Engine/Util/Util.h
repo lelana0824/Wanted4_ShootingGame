@@ -26,6 +26,12 @@ namespace Util
 		);
 	}
 
+	// 콘솔 사이즈 설정 함수
+	inline void SetConsoleSize()
+	{
+		
+	}
+
 	// 커서 끄기
 	inline void TurnOffCursor()
 	{

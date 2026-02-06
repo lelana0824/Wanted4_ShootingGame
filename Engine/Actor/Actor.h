@@ -34,7 +34,7 @@ namespace Wanted {
 		void QuitGame();
 
 		// 충돌 여부 확인 함수.
-		bool TestIntersect(const Actor* const other);
+		virtual bool TestIntersect(const Actor* const other);
 
 		void ChangeImage(const char* newImage);
 

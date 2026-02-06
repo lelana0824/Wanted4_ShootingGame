@@ -117,7 +117,7 @@ void Player::MoveDown()
 	position.y += 1;
 
 	// ÁÂÇ¥°Ë»ç
-	if (position.y > Engine::Get().GetHeight())
+	if (position.y > Engine::Get().GetHeight() - 2)
 	{
 		position.y -= 1;
 	}

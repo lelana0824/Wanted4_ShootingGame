@@ -46,7 +46,8 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
 
             Enemy* enemy = new Enemy(
                 tokenStr.c_str(),
-                Vector2(newXPosition, yPosition)
+                Vector2(newXPosition, yPosition),
+                Color::Blue
             );
 
             enemy->SetXPosition(static_cast<float>(newXPosition));

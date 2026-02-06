@@ -23,7 +23,6 @@ EnemySpawner::EnemySpawner()
 void EnemySpawner::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
-
 	SpawnEnemy(deltaTime);
 }
 
@@ -44,7 +43,13 @@ void EnemySpawner::SpawnEnemy(float deltaTime)
 	int index = Util::Random(0, length - 1);
 
 	int yPosition = Util::Random(1, 10);
+	int enemyCount = Util::Random(3, 6);
 
-	GetOwner()->AddNewActor(new SmallEnemy(enemyType[index], yPosition));
+	for (int i = 0; i < enemyCount; i++)
+	{
+		SmallEnemy* enemy = new SmallEnemy(enemyType[index], yPosition++);
+		enemy->SetMoveSpeed(10.0f + (i * 2));
+		GetOwner()->AddNewActor(enemy);
+	}
 
 }

@@ -20,11 +20,13 @@ protected:
 
 public:
 	Enemy(const char* image = "@", int yPosition = 5);
-	Enemy(const char* image = "@", Vector2 position = Vector2::Zero);
+	Enemy(const char* image = "@", Vector2 position = Vector2::Zero, Color color = Color::Green);
 	~Enemy();
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged();
+	virtual bool TestIntersect(const Actor* const other) override;
+
 	inline float GetXPosition() { return xPosition;  }
 	inline void SetXPosition(float inXPosition) { 
 		xPosition = inXPosition;
@@ -32,14 +34,16 @@ public:
 	}
 	inline const char* GetImage() const { return image; }
 	inline Timer& GetTimer() { return timer; }
+	inline bool GetCanHitOtherActor() { return canHitOtherActor; }
+	inline void SetMoveSpeed(float newMoveSpeed) { moveSpeed = newMoveSpeed; }
 
 protected:
 	MoveDirection direction = MoveDirection::None;
 
 	float xPosition = 0.0f;
 	float moveSpeed = 5.0f;
+	bool canHitOtherActor = true;
 
-	// 발사 타이머.
 	Timer timer;
 };
 

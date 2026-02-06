@@ -6,19 +6,17 @@
 #include "Actor/EnemyDestroyEffect.h"
 
 Enemy::Enemy(const char* image, int yPosition)
-	:super(image)
+	:super(image, Vector2(static_cast<int>(xPosition), yPosition), Color::Green)
 {
-	// 이동 방향에 따른 위치 설정.
-	SetPosition(
-		Vector2(static_cast<int>(xPosition), yPosition)
-	);
+	
 }
 
-Enemy::Enemy(const char* image, Vector2 position)
-	:super(image, position)
+Enemy::Enemy(const char* image, Vector2 position, Color color)
+	:super(image, position, color)
 {
 	SetPosition(position);
 }
+
 
 Enemy::~Enemy()
 {
@@ -33,4 +31,19 @@ void Enemy::Tick(float deltaTime)
 void Enemy::OnDamaged()
 {
 
+}
+
+bool Enemy::TestIntersect(const Actor* const other)
+{
+	bool hasIntersected = super::TestIntersect(other);
+
+	if (hasIntersected)
+	{
+		canHitOtherActor = false;
+	}
+	else {
+		canHitOtherActor = true;
+	}
+
+	return hasIntersected;
 }

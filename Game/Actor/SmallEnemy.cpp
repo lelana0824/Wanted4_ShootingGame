@@ -5,7 +5,7 @@
 #include "Actor/EnemyBullet.h"
 
 SmallEnemy::SmallEnemy(const char* image, int yPosition)
-	:super(image, yPosition)
+	:super(image, yPosition), yPosition(yPosition)
 {
 	// 랜덤 (오른쪽 또는 왼쪽으로 이동할지 결정)
 	int random = Util::Random(1, 10);
@@ -29,17 +29,22 @@ SmallEnemy::SmallEnemy(const char* image, int yPosition)
 	);
 	// 발사 타이머 목표 시간 설정.
 	timer.SetTargetTime(Util::RandomRange(1.0f, 3.0f));
+	firstAppearedTimer.SetTargetTime(1.0f);
 }
 
 void SmallEnemy::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
+	firstAppearedTimer.Tick(deltaTime);
+
 
 
 	// 이동 처리
 	float dir = direction == MoveDirection::Left ? -1.0f : 1.0f;
+	float appereadTimeOutNumber = firstAppearedTimer.IsTimeOut() ? 0.0f : 1.0f;
 
-	xPosition = xPosition + moveSpeed * dir * deltaTime;
+	xPosition = xPosition + moveSpeed * dir * (1 - appereadTimeOutNumber) *deltaTime;
+	yPosition = yPosition + moveSpeed * appereadTimeOutNumber * deltaTime;
 
 	if (xPosition + width < 0)
 	{
@@ -53,8 +58,15 @@ void SmallEnemy::Tick(float deltaTime)
 		return;
 	}
 
+	if (yPosition >= Engine::Get().GetHeight())
+	{
+		Destroy();
+		return;
+	}
+
+
 	SetPosition(
-		Vector2(static_cast<int>(xPosition), position.y)
+		Vector2(static_cast<int>(xPosition), static_cast<int>(yPosition))
 	);
 
 
