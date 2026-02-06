@@ -35,6 +35,7 @@ namespace Wanted
 
 		inline int GetWidth() const { return setting.width; }
 		inline int GetHeight() const { return setting.height; }
+		inline float GetOneFrame() const { return 1.0f / setting.framerate;  }
 
 	protected:
 		// 설정파일 로드 함수

@@ -11,10 +11,13 @@ Player::Player()
 {
 	int xPosition = (Engine::Get().GetWidth() / 2) - (width / 2);
 	int yPosition = Engine::Get().GetHeight() - 3;
+
 	
 	this->SetPosition(Vector2(xPosition, yPosition));
 
 	timer.SetTargetTime(0.2f);
+	sortingOrder = 10;
+
 }
 
 Player::~Player()

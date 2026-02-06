@@ -6,6 +6,7 @@
 #include "Util/Util.h"
 #include "Engine/Engine.h"
 #include "Actor/EnemyDestroyEffect.h"
+#include "Actor/DamagedEffect.h"
 
 #include <string>
 #include <sstream>
@@ -23,6 +24,7 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
     moveSpeed = 20.0f;
     direction = MoveDirection::Right;
     moveDirectionChangeTimer.SetTargetTime(3.0f);
+    canHitOtherActorTimer.SetTargetTime(3.0f);
 
     std::stringstream ss(enemieChars);
     std::string line;
@@ -70,6 +72,7 @@ void UltraEnemy::Tick(float deltaTime)
     super::Tick(deltaTime);
     timer.Tick(deltaTime);
     moveDirectionChangeTimer.Tick(deltaTime);
+    canHitOtherActorTimer.Tick(deltaTime);
 
     CreateBody();
     Move(deltaTime);
@@ -78,14 +81,14 @@ void UltraEnemy::Tick(float deltaTime)
 
 void UltraEnemy::OnDamaged()
 {
-    health -= 1;
-    for (Enemy* const enemy : enemies)
+    // 모습 완전히 드러내기 전까지는 데미지 안들어감.
+    if (!hasAllBodyShown())
     {
-
-        // 기존 -> 그 자리에 머물러있음
-        // 신규 -> 움직이는 에너미를 따라다녀야 함.
-        GetOwner()->AddNewActor(new EnemyDestroyEffect(enemy->GetPosition()));
+        return;
     }
+
+    health -= 1;
+
 
     if (health <= 0) {
         for (Enemy* const enemy : enemies)
@@ -97,8 +100,36 @@ void UltraEnemy::OnDamaged()
 
         Destroy();
     }
+    else
+    {
+        for (Enemy* const enemy : enemies)
+        {
+            GetOwner()->AddNewActor(
+                new DamagedEffect(
+                    enemy->GetPosition(),
+                    Vector2(
+                        direction == MoveDirection::Left ? -1 : 1,
+                        0
+                    ),
+                    moveSpeed
+                )
+            );
+        }
+    }
 
 }
+
+bool UltraEnemy::GetCanHitOtherActor()
+{
+    if (canHitOtherActorTimer.IsTimeOut())
+    {
+        canHitOtherActorTimer.Reset();
+        return true;
+    }
+
+    return false;
+}
+
 
 void UltraEnemy::CreateBody()
 {
@@ -181,4 +212,3 @@ void UltraEnemy::Shot(float deltaTime)
         );
     }
 }
-

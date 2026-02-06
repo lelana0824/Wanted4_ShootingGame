@@ -15,7 +15,8 @@ public:
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged() override;
-	
+	virtual bool GetCanHitOtherActor() override;
+
 	void CreateBody();
 	void Move(float deltaTime);
 	void Shot(float deltaTime);
@@ -29,8 +30,10 @@ private:
 	std::vector<Enemy*> enemies;
 	std::vector<Enemy*> bulletSpawners;
 
-	Vector2 position = Vector2(5, 5);
-	Timer moveDirectionChangeTimer;
 	int health = 10;
+	Vector2 position = Vector2(5, 5);
+
+	Timer moveDirectionChangeTimer;
+	Timer canHitOtherActorTimer;
 };
 

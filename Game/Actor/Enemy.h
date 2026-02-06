@@ -38,11 +38,13 @@ public:
 		yPosition = inYPosition;
 		return;
 	}
+	inline float GetMoveSpeed() { return moveSpeed; }
+	inline void SetMoveSpeed(float newMoveSpeed) { moveSpeed = newMoveSpeed; }
+
 
 	inline const char* GetImage() const { return image; }
 	inline Timer& GetTimer() { return timer; }
-	inline bool GetCanHitOtherActor() { return canHitOtherActor; }
-	inline void SetMoveSpeed(float newMoveSpeed) { moveSpeed = newMoveSpeed; }
+	virtual inline bool GetCanHitOtherActor() { return canHitOtherActor; }
 
 protected:
 	MoveDirection direction = MoveDirection::None;

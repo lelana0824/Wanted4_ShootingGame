@@ -24,8 +24,9 @@ GameLevel::GameLevel()
 
 	file.close();;
 
-	AddNewActor(new Player());
 	AddNewActor(new EnemySpawner());
+	AddNewActor(new Player());
+
 }
 
 GameLevel::~GameLevel()
@@ -109,6 +110,11 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 			// 대형 유닛의 일부와 AABB 겹침 판정.
 			if (enemy->IsTypeOf<UltraEnemy>())
 			{
+				if (!enemy->As<UltraEnemy>()->hasAllBodyShown())
+				{
+					continue;
+				}
+
 				for (Enemy* const parts : enemy->As<UltraEnemy>()->GetEnemies())
 				{
 					if (bullet->TestIntersect(parts))
@@ -185,6 +191,7 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 {
 	Player* player = nullptr;
+	UltraEnemy* uEnemy = nullptr;
 	std::vector<Enemy*> enemies;
 
 	for (Actor* const actor : actors)
@@ -197,6 +204,12 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 		if (!player && actor->IsTypeOf<Player>())
 		{
 			player = actor->As<Player>();
+			continue;
+		}
+
+		if (!uEnemy && actor->IsTypeOf<UltraEnemy>())
+		{
+			uEnemy = actor->As<UltraEnemy>();
 			continue;
 		}
 
@@ -217,7 +230,7 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 	{
 		if (enemy->GetCanHitOtherActor())
 		{
-			if (enemy->TestIntersect(player))
+			if (uEnemy->GetCanHitOtherActor() && enemy->TestIntersect(player))
 			{
 				health -= 1;
 

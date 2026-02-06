@@ -90,6 +90,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\DamagedEffect.cpp" />
     <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Actor\EnemyBullet.cpp" />
     <ClCompile Include="Actor\EnemyDestroyEffect.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="Util\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\DamagedEffect.h" />
     <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Actor\EnemyBullet.h" />
     <ClInclude Include="Actor\EnemyDestroyEffect.h" />
