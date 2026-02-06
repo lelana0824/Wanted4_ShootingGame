@@ -43,6 +43,14 @@ void Player::Tick(float deltaTime)
 	{
 		MoveRight();
 	}
+	if (Input::Get().GetKey(VK_UP))
+	{
+		MoveUp();
+	}
+	if (Input::Get().GetKey(VK_DOWN))
+	{
+		MoveDown();
+	}
 
 	if (fireMode == FireMode::OneShot)
 	{
@@ -90,6 +98,28 @@ void Player::MoveLeft()
 	if (position.x < 0)
 	{
 		position.x = 0;
+	}
+}
+
+void Player::MoveUp()
+{
+	position.y -= 1;
+
+	// ÁÂÇ¥°Ë»ç
+	if (position.y < 0)
+	{
+		position.y = 0;
+	}
+}
+
+void Player::MoveDown()
+{
+	position.y += 1;
+
+	// ÁÂÇ¥°Ë»ç
+	if (position.y > Engine::Get().GetHeight())
+	{
+		position.y -= 1;
 	}
 }
 

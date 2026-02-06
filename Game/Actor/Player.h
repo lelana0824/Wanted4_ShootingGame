@@ -25,6 +25,8 @@ private:
 
 	void MoveRight();
 	void MoveLeft();
+	void MoveUp();
+	void MoveDown();
 
 	void Fire();
 

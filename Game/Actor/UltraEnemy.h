@@ -15,9 +15,21 @@ public:
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged() override;
+	
+	void CreateBody();
+	void Move(float deltaTime);
+	void Shot(float deltaTime);
+	
+	inline std::vector<Enemy*> GetEnemies() {
+		return enemies;
+	}
 
 private:
 	std::vector<Enemy*> enemies;
+	std::vector<Enemy*> bulletSpawners;
+
 	Vector2 position = Vector2(5, 5);
+	Timer moveDirectionChangeTimer;
+	int health = 10;
 };
 

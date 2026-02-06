@@ -25,6 +25,13 @@ public:
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged();
+	inline float GetXPosition() { return xPosition;  }
+	inline void SetXPosition(float inXPosition) { 
+		xPosition = inXPosition;
+		return; 
+	}
+	inline const char* GetImage() const { return image; }
+	inline Timer& GetTimer() { return timer; }
 
 protected:
 	MoveDirection direction = MoveDirection::None;

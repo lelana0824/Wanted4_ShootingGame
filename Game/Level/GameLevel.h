@@ -19,6 +19,7 @@ private:
 	// 충돌 판정 처리 함수.
 	void ProcessCollisionPlayerBulletAndEnemy();
 	void ProcessCollisionPlayerAndEnemyBullet();
+	void ProcessCollisionPlayerAndUltraEnemy();
 
 	void ShowScore();
 
@@ -34,5 +35,7 @@ private:
 
 	// 점수 문자열.
 	char scoreString[128] = {};
+	int health = 20;
+
 };
 

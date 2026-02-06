@@ -4,32 +4,31 @@
 #include "Actor/PlayerBullet.h"
 #include "Actor/EnemyBullet.h"
 #include "Actor/EnemySpawner.h"
+#include "Actor/SmallEnemy.h"
 #include "Actor/UltraEnemy.h"
 #include "Render/Renderer.h"
 #include "Engine/Engine.h"
+
 #include <string>
+#include <iostream>
+#include <fstream> 
+#include <sstream>
 
 GameLevel::GameLevel()
 {
-	// player 액터 추가.
-	FILE* file = nullptr;
+	std::ifstream file("../Assets/UltraEnemy.txt");
 
+	if (!file.is_open()) {
+	}
+
+	std::stringstream buffer;
+	buffer << file.rdbuf();
+
+	file.close();;
 
 	AddNewActor(new Player());
 	//AddNewActor(new EnemySpawner());
-	AddNewActor(new UltraEnemy(R"(
-    **********
-    **********
-     ******** 
-     ******** 
-       ****   
-       ****   
-       ****   
-        **    
-        **    
-        **    
-        **     
-    )"));
+	AddNewActor(new UltraEnemy(buffer.str().c_str()));
 }
 
 GameLevel::~GameLevel()
@@ -43,6 +42,7 @@ void GameLevel::Tick(float deltaTime)
 
 	ProcessCollisionPlayerBulletAndEnemy();
 	ProcessCollisionPlayerAndEnemyBullet();
+	ProcessCollisionPlayerAndUltraEnemy();
 }
 
 void GameLevel::Draw()
@@ -85,9 +85,14 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 			continue;
 		}
 
-		if (actor->IsTypeOf<Enemy>())
+		if (actor->IsTypeOf<SmallEnemy>())
 		{
-			enemies.emplace_back(actor->As<Enemy>());
+			enemies.emplace_back(actor->As<SmallEnemy>());
+		}
+
+		if (actor->IsTypeOf<UltraEnemy>())
+		{
+			enemies.emplace_back(actor->As<UltraEnemy>());
 		}
 	}
 
@@ -102,14 +107,29 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 	{
 		for (Enemy* const enemy : enemies)
 		{
-			// AABB 겹침 판정.
-			if (bullet->TestIntersect(enemy))
+			// 대형 유닛의 일부와 AABB 겹침 판정.
+			if (enemy->IsTypeOf<UltraEnemy>())
 			{
-				enemy->OnDamaged();
-				bullet->Destroy();
+				for (Enemy* const parts : enemy->As<UltraEnemy>()->GetEnemies())
+				{
+					if (bullet->TestIntersect(parts))
+					{
+						enemy->OnDamaged();
+						bullet->Destroy();
+						score += 10;
+						continue;
+					}
+				}
+			}
+			else if (enemy->IsTypeOf<SmallEnemy>()) {
+				if (bullet->TestIntersect(enemy))
+				{
+					enemy->OnDamaged();
+					bullet->Destroy();
 
-				score += 1;
-				continue;
+					score += 1;
+					continue;
+				}
 			}
 		}
 	}
@@ -146,16 +166,78 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 	{
 		if (bullet->TestIntersect(player))
 		{
-			// 플레이어 죽음 설정.
-			isPlayerDead = true;
+			health -= 1;
 
-			// 죽은 위치 저장.
-			playerDeadPosition = player->GetPosition();
+			if (health <= 0)
+			{
+				// 플레이어 죽음 설정.
+				isPlayerDead = true;
 
-			// 액터 제거 처리.
-			player->Destroy();
+				// 죽은 위치 저장.
+				playerDeadPosition = player->GetPosition();
+
+				// 액터 제거 처리.
+				player->Destroy();
+				break;
+			}
+
 			bullet->Destroy();
-			break;
+		}
+	}
+}
+
+void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
+{
+	Player* player = nullptr;
+	std::vector<Actor*> enemies;
+
+	for (Actor* const actor : actors)
+	{
+		if (actor->IsTypeOf<SmallEnemy>())
+		{
+			continue;
+		}
+
+		if (!player && actor->IsTypeOf<Player>())
+		{
+			player = actor->As<Player>();
+			continue;
+		}
+
+		if (actor->IsTypeOf<Enemy>())
+		{
+			enemies.emplace_back(actor);
+		}
+	}
+
+	if (enemies.size() == 0 || !player)
+	{
+		return;
+	}
+
+
+	// 충돌판정.
+	for (Actor* const enemy : enemies)
+	{
+		if (enemy->TestIntersect(player))
+		{
+			health -= 1;
+
+			if (health <= 0)
+			{
+				// 플레이어 죽음 설정.
+				isPlayerDead = true;
+
+				// 죽은 위치 저장.
+				playerDeadPosition = player->GetPosition();
+
+				// 액터 제거 처리.
+				player->Destroy();
+				break;
+			}
+
+			// 총알은 바로 사라지지면 몸체는 사라지지 않기 떄문에 방안필요.
+			//bullet->Destroy();
 		}
 	}
 }
