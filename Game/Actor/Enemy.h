@@ -9,7 +9,7 @@ class Enemy : public Actor
 	RTTI_DECLARATIONS(Enemy, Actor)
 
 
-protected:
+public:
 	// 이동 방향 열거형.
 	enum class MoveDirection
 	{

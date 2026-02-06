@@ -4,22 +4,19 @@
 #include "Engine/Engine.h"
 #include "Actor/EnemyBullet.h"
 
-SmallEnemy::SmallEnemy(const char* image, int yPosition)
+SmallEnemy::SmallEnemy(const char* image, int yPosition, MoveDirection direction)
 	:super(image, yPosition), yPosition(yPosition)
 {
-	// 랜덤 (오른쪽 또는 왼쪽으로 이동할지 결정)
-	int random = Util::Random(1, 10);
+	this->direction = direction;
 
-	if (random % 2 == 0)
+	if (direction == MoveDirection::Left)
 	{
-		direction = MoveDirection::Left;
 		xPosition = static_cast<float>(
 			Engine::Get().GetWidth() - width - 1
-			);
+		);
 	}
 	else
 	{
-		direction = MoveDirection::Right;
 		xPosition = 0;
 	}
 

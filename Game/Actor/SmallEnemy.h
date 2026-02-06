@@ -7,7 +7,7 @@ class SmallEnemy : public Enemy
 
 
 public:
-	SmallEnemy(const char* image = "@", int yPosition = 5);
+	SmallEnemy(const char* image = "@", int yPosition = 5, MoveDirection moveDirection = MoveDirection::Left);
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged() override;
 
