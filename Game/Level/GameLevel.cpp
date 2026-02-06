@@ -12,7 +12,6 @@
 #include <string>
 #include <iostream>
 #include <fstream> 
-#include <sstream>
 
 GameLevel::GameLevel()
 {
@@ -21,14 +20,12 @@ GameLevel::GameLevel()
 	if (!file.is_open()) {
 	}
 
-	std::stringstream buffer;
-	buffer << file.rdbuf();
+	ultraEnemyBuffer << file.rdbuf();
 
 	file.close();;
 
 	AddNewActor(new Player());
 	AddNewActor(new EnemySpawner());
-	AddNewActor(new UltraEnemy(buffer.str().c_str()));
 }
 
 GameLevel::~GameLevel()
@@ -39,6 +36,8 @@ GameLevel::~GameLevel()
 void GameLevel::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
+
+	ShowUltraEnemy();
 
 	ProcessCollisionPlayerBulletAndEnemy();
 	ProcessCollisionPlayerAndEnemyBullet();
@@ -241,6 +240,24 @@ void GameLevel::ShowScore()
 	sprintf_s(scoreString, 128, "Score: %d    Health: %d", score, health);
 	Renderer::Get().Submit(
 		scoreString,
-		Vector2(0, Engine::Get().GetHeight() - 1)
+		Vector2(0, 0)
 	);
+}
+
+void GameLevel::ShowUltraEnemy()
+{
+	if (score < targetScoreForShowingUltraEnemy) return;
+	if (hasShownUltraEnemy) return;
+
+	hasShownUltraEnemy = true;
+	AddNewActor(new UltraEnemy(ultraEnemyBuffer.str().c_str()));
+
+	for (Actor* const actor : actors)
+	{
+		if (actor->IsTypeOf<EnemySpawner>())
+		{
+			actor->As<EnemySpawner>()->StopSpawn();
+			break;
+		}
+	}
 }

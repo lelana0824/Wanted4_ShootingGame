@@ -12,7 +12,6 @@ public:
 	virtual void OnDamaged() override;
 
 private:
-	float yPosition = position.y;
 	Timer firstAppearedTimer;
 };
 

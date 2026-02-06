@@ -23,6 +23,7 @@ public:
 	inline std::vector<Enemy*> GetEnemies() {
 		return enemies;
 	}
+	inline bool hasAllBodyShown() { return timer.IsTimeOut(); }
 
 private:
 	std::vector<Enemy*> enemies;

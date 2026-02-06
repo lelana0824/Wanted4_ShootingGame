@@ -27,7 +27,7 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
     std::stringstream ss(enemieChars);
     std::string line;
 
-    int yPosition = 1;
+    int yPosition = -10;
 
     while (std::getline(ss, line)) {
         if (line.empty()) {
@@ -51,6 +51,7 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
             );
 
             enemy->SetXPosition(static_cast<float>(newXPosition));
+            enemy->SetYPosition(yPosition);
             enemies.emplace_back(enemy);
 
             if (token == '@') {
@@ -78,6 +79,13 @@ void UltraEnemy::Tick(float deltaTime)
 void UltraEnemy::OnDamaged()
 {
     health -= 1;
+    for (Enemy* const enemy : enemies)
+    {
+
+        // 기존 -> 그 자리에 머물러있음
+        // 신규 -> 움직이는 에너미를 따라다녀야 함.
+        GetOwner()->AddNewActor(new EnemyDestroyEffect(enemy->GetPosition()));
+    }
 
     if (health <= 0) {
         for (Enemy* const enemy : enemies)
@@ -114,12 +122,21 @@ void UltraEnemy::Move(float deltaTime)
 
     for (Enemy* const enemy : enemies)
     {
-        // 최초 등장시에는 타이머가 끝날때까지 그자리에서 대기.
-        if (!timer.IsTimeOut()) {
+        enemy->Tick(deltaTime);
+
+        // 최초 등장시에는 타이머 시간만큼 안보이는 곳에서 내려와야 함.
+        if (!hasAllBodyShown()) {
+            enemy->SetYPosition(enemy->GetYPosition() + (moveSpeed / 8) * 1 * deltaTime);
+
+            enemy->SetPosition(
+                Vector2(
+                    enemy->GetPosition().x,
+                    static_cast<int>(enemy->GetYPosition())
+                )
+            );
+
             continue;
         }
-
-        enemy->Tick(deltaTime);
 
         float dir = direction == MoveDirection::Left ? -1.0f : 1.0f;
 
@@ -131,11 +148,18 @@ void UltraEnemy::Move(float deltaTime)
                 enemy->GetPosition().y
             )
         );
+
     }
+
 }
 
 void UltraEnemy::Shot(float deltaTime)
 {
+    if (!hasAllBodyShown())
+    {
+        return;
+    }
+
     for (Enemy* const spawner : bulletSpawners)
     {
 

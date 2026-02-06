@@ -32,6 +32,13 @@ public:
 		xPosition = inXPosition;
 		return; 
 	}
+
+	inline float GetYPosition() { return yPosition; }
+	inline void SetYPosition(float inYPosition) {
+		yPosition = inYPosition;
+		return;
+	}
+
 	inline const char* GetImage() const { return image; }
 	inline Timer& GetTimer() { return timer; }
 	inline bool GetCanHitOtherActor() { return canHitOtherActor; }
@@ -41,6 +48,7 @@ protected:
 	MoveDirection direction = MoveDirection::None;
 
 	float xPosition = 0.0f;
+	float yPosition = 0.0f;
 	float moveSpeed = 5.0f;
 	bool canHitOtherActor = true;
 

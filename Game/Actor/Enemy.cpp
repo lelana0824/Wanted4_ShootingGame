@@ -6,7 +6,7 @@
 #include "Actor/EnemyDestroyEffect.h"
 
 Enemy::Enemy(const char* image, int yPosition)
-	:super(image, Vector2(static_cast<int>(xPosition), yPosition), Color::Green)
+	:super(image, Vector2(static_cast<int>(xPosition), yPosition), Color::Green), yPosition(yPosition)
 {
 	
 }

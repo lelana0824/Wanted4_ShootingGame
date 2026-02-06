@@ -5,9 +5,10 @@
 #include "Actor/EnemyBullet.h"
 
 SmallEnemy::SmallEnemy(const char* image, int yPosition, MoveDirection direction)
-	:super(image, yPosition), yPosition(yPosition)
+	:super(image, yPosition)
 {
 	this->direction = direction;
+	this->yPosition = yPosition;
 
 	if (direction == MoveDirection::Left)
 	{

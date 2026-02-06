@@ -24,7 +24,10 @@ EnemySpawner::EnemySpawner()
 void EnemySpawner::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
-	SpawnEnemy(deltaTime);
+
+	if (!isStopSpawn) {
+		SpawnEnemy(deltaTime);
+	}
 }
 
 void EnemySpawner::SpawnEnemy(float deltaTime)

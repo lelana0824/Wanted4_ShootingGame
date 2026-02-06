@@ -1,6 +1,8 @@
 #pragma once
 #include "Level/Level.h"
 #include "Math/Vector2.h"
+#include <sstream>
+
 
 using namespace Wanted;
 
@@ -22,6 +24,7 @@ private:
 	void ProcessCollisionPlayerAndUltraEnemy();
 
 	void ShowScore();
+	void ShowUltraEnemy();
 
 private:
 	// 점수 변수.
@@ -35,7 +38,16 @@ private:
 
 	// 점수 문자열.
 	char scoreString[128] = {};
+
+	// 플레이어 체력
 	int health = 20;
 
+	// 대형 유닛 소환을 위한 목표 점수
+	int targetScoreForShowingUltraEnemy = 5;
+
+	// 대형 유닛 소환 여부
+	bool hasShownUltraEnemy = false;
+
+	std::stringstream ultraEnemyBuffer;
 };
 
