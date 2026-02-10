@@ -7,7 +7,7 @@
 
 Player::Player()
 	: super("<-=A=->", Vector2::Zero, Color::Red)
-	, fireMode(FireMode::OneShot)
+	, fireMode(FireMode::Repeat)
 {
 	int xPosition = (Engine::Get().GetWidth() / 2) - (width / 2);
 	int yPosition = Engine::Get().GetHeight() - 3;
@@ -22,6 +22,15 @@ Player::Player()
 
 Player::~Player()
 {
+}
+
+void Player::ConsumeItem(Item* item)
+{
+	if (item->GetBulletCount() >= bulletSpawnCount) {
+		bulletSpawnCount = item->GetBulletCount();
+	}
+
+	fireDirection = item->GetFireDirectionType();
 }
 
 void Player::Tick(float deltaTime)
@@ -129,14 +138,42 @@ void Player::MoveDown()
 void Player::Fire()
 {
 	timer.Reset();
+	
+	float target = width / bulletSpawnCount + 1;
 
-	// 위치 설정
-	Vector2 bulletPosition(
-		position.x + (width / 2),
-		position.y
-	);
+	for (int i = 1; i <= bulletSpawnCount; i++)
+	{
+		// 위치 설정
+		Vector2 bulletPosition(
+			(position.x - width / 2) + static_cast<int>(target * i),
+			position.y
+		);
+		;
 
-	GetOwner()->AddNewActor(new PlayerBullet(bulletPosition));
+		switch (fireDirection)
+		{
+			case Item::FireDirectionType::Side:
+			{
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition, Vector2(1, 0)));
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition, Vector2(-1, 0)));
+				break;
+			}
+			case Item::FireDirectionType::All:
+			{
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition));
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition, Vector2(1, 0)));
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition, Vector2(-1, 0)));
+				break;
+			}
+
+			case Item::FireDirectionType::Top:
+			default:
+				GetOwner()->AddNewActor(new PlayerBullet(bulletPosition));
+				break;
+
+		}
+	}
+	
 }
 
 void Player::FireInterval()

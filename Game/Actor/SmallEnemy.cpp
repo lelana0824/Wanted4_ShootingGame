@@ -3,6 +3,7 @@
 #include "Actor/EnemyDestroyEffect.h"
 #include "Engine/Engine.h"
 #include "Actor/EnemyBullet.h"
+#include "Actor/Item.h"
 
 SmallEnemy::SmallEnemy(const char* image, int yPosition, MoveDirection direction)
 	:super(image, yPosition)
@@ -90,5 +91,19 @@ void SmallEnemy::OnDamaged()
 {
 	Destroy();
 
+	int targetNumber = Util::Random(0, 2);
+
+	if (targetNumber == 0)
+	{
+		int bulletCount = Util::Random(1, 3);
+		Item::FireDirectionType fireDirection
+			= bulletCount == 1 
+			? static_cast<Item::FireDirectionType>(Util::Random(0, 2))
+			: Item::FireDirectionType::Top;
+
+		GetOwner()->AddNewActor(new Item(position, bulletCount, fireDirection));
+	}
+
+	
 	GetOwner()->AddNewActor(new EnemyDestroyEffect(position));
 }

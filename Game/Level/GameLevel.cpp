@@ -8,6 +8,7 @@
 #include "Actor/UltraEnemy.h"
 #include "Render/Renderer.h"
 #include "Engine/Engine.h"
+#include "Actor/Item.h"
 
 #include <string>
 #include <iostream>
@@ -42,11 +43,12 @@ void GameLevel::Tick(float deltaTime)
 		deadEventTimer.Tick(deltaTime);
 	}
 
-ShowUltraEnemy();
+	ShowUltraEnemy();
 
-ProcessCollisionPlayerBulletAndEnemy();
-ProcessCollisionPlayerAndEnemyBullet();
-ProcessCollisionPlayerAndUltraEnemy();
+	ProcessCollisionPlayerBulletAndEnemy();
+	ProcessCollisionPlayerAndEnemyBullet();
+	ProcessCollisionPlayerAndUltraEnemy();
+	ProcessCollisionPlayerAndItem();
 }
 
 void GameLevel::Draw()
@@ -346,6 +348,39 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 			}
 		}
 	}
+}
+
+void GameLevel::ProcessCollisionPlayerAndItem()
+{
+	Player* player = nullptr;
+	Item* item = nullptr;
+
+	for (Actor* const actor : actors)
+	{
+		if (!player && actor->IsTypeOf<Player>())
+		{
+			player = actor->As<Player>();
+			continue;
+		}
+
+		if (!item && actor->IsTypeOf<Item>())
+		{
+			item = actor->As<Item>();
+			continue;
+		}
+	}
+
+	if (!item || !player)
+	{
+		return;
+	}
+
+	if (item->TestIntersect(player))
+	{
+		player->ConsumeItem(item);
+		item->Destroy();
+	}
+
 }
 
 void GameLevel::ShowScore()

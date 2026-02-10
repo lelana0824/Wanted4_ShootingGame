@@ -2,6 +2,7 @@
 
 #include "Actor/Actor.h"
 #include "Util/Timer.h"
+#include "Actor/Item.h"
 
 using namespace Wanted;
 
@@ -19,6 +20,7 @@ class Player : public Actor
 public:
 	Player();
 	~Player();
+	void ConsumeItem(Item* item);
 
 private:
 	virtual void Tick(float deltaTime) override;
@@ -37,6 +39,8 @@ private:
 private:
 	// 발사 모드
 	FireMode fireMode = FireMode::None;
+	Item::FireDirectionType fireDirection = Item::FireDirectionType::All;
+	int bulletSpawnCount = 3;
 
 	Timer timer = Timer(0.2f);
 };

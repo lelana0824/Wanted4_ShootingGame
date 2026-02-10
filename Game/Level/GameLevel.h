@@ -23,6 +23,7 @@ private:
 	void ProcessCollisionPlayerBulletAndEnemy();
 	void ProcessCollisionPlayerAndEnemyBullet();
 	void ProcessCollisionPlayerAndUltraEnemy();
+	void ProcessCollisionPlayerAndItem();
 
 	void ShowScore();
 	void ShowUltraEnemy();
@@ -45,7 +46,7 @@ private:
 	int health = 20;
 
 	// 대형 유닛 소환을 위한 목표 점수
-	int targetScoreForShowingUltraEnemy = 5;
+	int targetScoreForShowingUltraEnemy = 50;
 
 	// 대형 유닛 소환 여부
 	bool hasShownUltraEnemy = false;
