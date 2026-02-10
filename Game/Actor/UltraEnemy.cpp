@@ -207,7 +207,8 @@ void UltraEnemy::Shot(float deltaTime)
         GetOwner()->AddNewActor(
             new EnemyBullet(
                 Vector2(spawner->GetPosition().x, spawner->GetPosition().y + 1),
-                10.0f
+                10.0f,
+                Color::Blue
             )
         );
     }

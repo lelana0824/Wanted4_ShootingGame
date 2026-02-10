@@ -31,7 +31,7 @@ private:
 	std::vector<Enemy*> enemies;
 	std::vector<Enemy*> bulletSpawners;
 
-	int health = 10;
+	int health = 100;
 	Vector2 position = Vector2(5, 5);
 
 	Timer moveDirectionChangeTimer;

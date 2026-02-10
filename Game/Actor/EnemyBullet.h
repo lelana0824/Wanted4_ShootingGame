@@ -10,7 +10,8 @@ class EnemyBullet : public Actor
 public:
 	EnemyBullet(
 		const Vector2& position,
-		float moveSpeed = 15.0f
+		float moveSpeed = 15.0f,
+		Color color = Color::Red
 	);
 
 private:

@@ -2,8 +2,8 @@
 #include "Engine/Engine.h"
 
 EnemyBullet::EnemyBullet(
-	const Vector2& position, float moveSpeed)
-	: super("!", position, Color::Blue),
+	const Vector2& position, float moveSpeed, Color color)
+	: super("!", position, color),
 	moveSpeed(moveSpeed),
 	yPosition(static_cast<float>(position.y))
 {

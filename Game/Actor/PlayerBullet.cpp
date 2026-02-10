@@ -4,7 +4,7 @@
 PlayerBullet::PlayerBullet(
 	const Vector2& position,
 	const Vector2& sideDirection
-) :super("*", position, Color::Red),
+) :super("*", position, Color::Green),
 	xPosition(static_cast<float>(position.x)),
 	yPosition(static_cast<float>(position.y)),
 	sideDirection(sideDirection)

@@ -6,7 +6,7 @@
 #include "Render/Renderer.h"
 
 Player::Player()
-	: super("<-=A=->", Vector2::Zero, Color::Red)
+	: super("<-=A=->", Vector2::Zero, Color::Green)
 	, fireMode(FireMode::Repeat)
 {
 	int xPosition = (Engine::Get().GetWidth() / 2) - (width / 2);
