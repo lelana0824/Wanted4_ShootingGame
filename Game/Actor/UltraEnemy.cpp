@@ -29,7 +29,7 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
     std::stringstream ss(enemieChars);
     std::string line;
 
-    int yPosition = -15;
+    int yPosition = -5;
 
     while (std::getline(ss, line)) {
         if (line.empty()) {
