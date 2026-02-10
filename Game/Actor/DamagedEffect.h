@@ -66,18 +66,18 @@ private:
 
 	// 효과 재생에 사용할 문자열 시퀀스 (일종의 애니메이션 프레임).
 	DamagedEffect::EffectFrame sequence[12] = {
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Blue),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Green),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Blue),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Green),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Blue),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Green),
-		DamagedEffect::EffectFrame("@", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Blue),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Green),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Blue),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Green),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Blue),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Green),
+		DamagedEffect::EffectFrame("*", 1.3f, Color::Red),
 	};
 };
 

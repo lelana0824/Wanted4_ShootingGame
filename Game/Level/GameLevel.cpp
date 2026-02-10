@@ -27,28 +27,123 @@ GameLevel::GameLevel()
 	AddNewActor(new EnemySpawner());
 	AddNewActor(new Player());
 
+	deadEventTimer.SetTargetTime(3.0f);
 }
 
 GameLevel::~GameLevel()
 {
-
 }
 
 void GameLevel::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
+	if (isGameClear)
+	{
+		deadEventTimer.Tick(deltaTime);
+	}
 
-	ShowUltraEnemy();
+ShowUltraEnemy();
 
-	ProcessCollisionPlayerBulletAndEnemy();
-	ProcessCollisionPlayerAndEnemyBullet();
-	ProcessCollisionPlayerAndUltraEnemy();
+ProcessCollisionPlayerBulletAndEnemy();
+ProcessCollisionPlayerAndEnemyBullet();
+ProcessCollisionPlayerAndUltraEnemy();
 }
 
 void GameLevel::Draw()
 {
 	super::Draw();
 
+	if (deadEventTimer.IsTimeOut())
+	{
+		ClearAllActors();
+		system("cls");
+		/*
+  ____ _                   _ _
+ / ___| | ___  __ _ _ __  | | |
+| |   | |/ _ \\/ _` | '__| | | |
+| |___| |  __/ (_| | |    |_|_|
+ \\____|_|\\___|\\__,_|_|    (_|_)
+		*/
+		// 플레이어 죽음 메시지 Renderer에 제출.
+
+		Renderer::Get().Submit(
+			"####################################################\n"
+			"####################################################\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##          ____ _                   _ _          ##\n"
+			"##         / ___| | ___  __ _ _ __  | | |         ##\n"
+			"##        | |   | |/ _ \\/ _` | '__| | | |         ##\n"
+			"##        | |___| |  __/ (_| | |    |_|_|         ##\n"
+			"##         \\____|_|\\___|\\__,_|_|    (_|_)         ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"##                                                ##\n"
+			"####################################################\n"
+			"####################################################\n",
+			Vector2::Zero,
+			Color::Blue,
+			10
+		);
+
+		// 화면에 바로 표시.
+		Renderer::Get().PresentImmediately();
+
+		// 프로그램 정지.
+		Sleep(5000);
+
+		// 게임 종료.
+		Engine::Get().QuitEngine();
+
+		return;
+	}
+
+	// game over
 	if (isPlayerDead)
 	{
 		// 플레이어 죽음 메시지 Renderer에 제출.
@@ -122,6 +217,11 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 						enemy->OnDamaged();
 						bullet->Destroy();
 						score += 10;
+
+						if (enemy->As<UltraEnemy>()->IsDead())
+						{
+							isGameClear = true;
+						}
 						continue;
 					}
 				}
@@ -274,3 +374,12 @@ void GameLevel::ShowUltraEnemy()
 		}
 	}
 }
+
+void GameLevel::ClearAllActors()
+{
+	for (Actor* const actor : actors)
+	{
+		actor->Destroy();
+	}
+}
+

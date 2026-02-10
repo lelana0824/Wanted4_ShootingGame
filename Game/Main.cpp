@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Engine/Engine.h"
 #include "Level/GameLevel.h"
+#include "Game/Game.h"
+
 
 using namespace Wanted;
 
@@ -12,9 +14,8 @@ int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	Engine engine;
-	engine.SetNewLevel(new GameLevel());
-	engine.Run();
+	Game game;
+	game.Run();
 
 
 	std::cin.get();

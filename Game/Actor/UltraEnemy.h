@@ -25,6 +25,7 @@ public:
 		return enemies;
 	}
 	inline bool hasAllBodyShown() { return timer.IsTimeOut(); }
+	inline bool IsDead() { return health <= 0; }
 
 private:
 	std::vector<Enemy*> enemies;

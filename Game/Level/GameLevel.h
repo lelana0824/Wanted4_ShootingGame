@@ -1,6 +1,7 @@
 #pragma once
 #include "Level/Level.h"
 #include "Math/Vector2.h"
+#include "Util/Timer.h"
 #include <sstream>
 
 
@@ -25,6 +26,7 @@ private:
 
 	void ShowScore();
 	void ShowUltraEnemy();
+	void ClearAllActors();
 
 private:
 	// 점수 변수.
@@ -48,6 +50,10 @@ private:
 	// 대형 유닛 소환 여부
 	bool hasShownUltraEnemy = false;
 
+	bool isGameClear = false;
+
 	std::stringstream ultraEnemyBuffer;
+
+	Timer deadEventTimer;
 };
 

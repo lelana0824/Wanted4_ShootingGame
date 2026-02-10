@@ -2,6 +2,8 @@
 #include "ScreenBuffer.h"
 #include "Util/Util.h"
 
+#include <cstring>
+
 namespace Wanted {
 	Renderer::Frame::Frame(int bufferCount)
 	{
@@ -183,14 +185,57 @@ namespace Wanted {
 		Color color,
 		int sortingOrder)
 	{
-		// 렌더 데이터 생성 후 큐에 추가.
-		RenderCommand command = {};
-		command.text = text;
-		command.position = position;
-		command.color = color;
-		command.sortingOrder = sortingOrder;
+		
+		
+		const char* start = text;
+		const char* nextLine = nullptr;
 
-		renderQueue.emplace_back(command);
+		int positionX = position.x;
+		int positionY = position.y;
+
+		while ((nextLine = strchr(start, '\n')) != nullptr) {
+			// [start]부터 [nextLine] 전까지가 한 줄
+			size_t length = nextLine - start;
+			if (length > 0 && start[length - 1] == '\r') {
+				length--;
+			}
+
+			// 실무에서는 이 지점에서 데이터를 복사하지 않고 바로 처리함
+			if (length > 0) {
+
+				// 렌더 데이터 생성 후 큐에 추가.
+				RenderCommand command = {};
+				char* lineBuffer = new char[length + 1];
+				memcpy(lineBuffer, start, length);
+
+				// 3. 널 문자 수동 삽입 (반드시 필요)
+				lineBuffer[length] = '\0';
+				command.text = lineBuffer;
+
+				command.position = Vector2(positionX + 1, positionY);
+				command.color = color;
+				command.sortingOrder = sortingOrder;
+
+				renderQueue.emplace_back(command);
+			}
+
+			positionY += 1;
+			start = nextLine + 1; // \n 다음 위치로 이동
+		}
+
+		// 마지막 줄 처리 (문자열 끝이 \n으로 끝나지 않은 경우)
+		if (*start != '\0') {
+			// 렌더 데이터 생성 후 큐에 추가.
+			RenderCommand command = {};
+
+			command.text = text;
+			command.position = position;
+			command.color = color;
+			command.sortingOrder = sortingOrder;
+
+			renderQueue.emplace_back(command);
+		}
+		
 	}
 
 	void Renderer::PresentImmediately()
