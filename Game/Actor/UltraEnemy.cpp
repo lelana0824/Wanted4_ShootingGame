@@ -29,13 +29,14 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
     std::stringstream ss(enemieChars);
     std::string line;
 
-    int yPosition = -10;
+    int yPosition = -15;
 
     while (std::getline(ss, line)) {
         if (line.empty()) {
             continue;
         }
 
+        // 화면 중앙에서 나타나길 원함
         int defaultXPosition = (Engine::Get().GetWidth() / 2) - (line.size() / 2);
         
         for (int x = 0; x < line.size(); ++x) {
@@ -56,6 +57,7 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
             enemy->SetYPosition(yPosition);
             enemies.emplace_back(enemy);
 
+            // 특정 토큰의 경우는 bulletSpanwer로 지정해 둠.
             if (token == '@') {
                 enemy->GetTimer().SetTargetTime(0.5f);
                 bulletSpawners.emplace_back(enemy);
@@ -64,7 +66,6 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
 
         yPosition++;
     }
-
 }
 
 UltraEnemy::~UltraEnemy()
@@ -145,19 +146,22 @@ bool UltraEnemy::GetCanHitOtherActor()
 
 void UltraEnemy::CreateBody()
 {
-    for (Enemy* const enemy : enemies)
+    // 최초 1회만 생성
+
+    if (!isActive)
     {
-        // 몸체 생성
-        if (!isActive)
+        for (Enemy* const enemy : enemies)
         {
             GetOwner()->AddNewActor(enemy);
         }
     }
+    
     isActive = true;
 }
 
 void UltraEnemy::Move(float deltaTime)
 {
+    // 특정 시간마다 한번씩 방향을 바꿔줌. (현재는 좌우기반)
     if (moveDirectionChangeTimer.IsTimeOut()) {
         direction = static_cast<MoveDirection>(1 - static_cast<int>(direction));
         moveDirectionChangeTimer.Reset();
@@ -184,7 +188,6 @@ void UltraEnemy::Move(float deltaTime)
         float dir = direction == MoveDirection::Left ? -1.0f : 1.0f;
 
         enemy->SetXPosition(enemy->GetXPosition() + moveSpeed * dir * deltaTime);
-
         enemy->SetPosition(
             Vector2(
                 static_cast<int>(enemy->GetXPosition()),

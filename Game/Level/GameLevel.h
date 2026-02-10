@@ -43,7 +43,7 @@ private:
 	char scoreString[128] = {};
 
 	// 플레이어 체력
-	int health = 20;
+	int health = 50;
 
 	// 대형 유닛 소환을 위한 목표 점수
 	int targetScoreForShowingUltraEnemy = 50;

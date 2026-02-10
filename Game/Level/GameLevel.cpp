@@ -205,22 +205,26 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 		for (Enemy* const enemy : enemies)
 		{
 			// 대형 유닛의 일부와 AABB 겹침 판정.
+
 			if (enemy->IsTypeOf<UltraEnemy>())
 			{
-				if (!enemy->As<UltraEnemy>()->hasAllBodyShown())
+				UltraEnemy* uEnemy = enemy->As<UltraEnemy>();
+
+				if (!uEnemy->hasAllBodyShown())
 				{
 					continue;
 				}
 
-				for (Enemy* const parts : enemy->As<UltraEnemy>()->GetEnemies())
+				for (Enemy* const parts : uEnemy->GetEnemies())
 				{
+					// !! Enemy는 피격 여부만 확인하고 실제 로직은 uEnemy에 적용
 					if (bullet->TestIntersect(parts))
 					{
-						enemy->OnDamaged();
+						uEnemy->OnDamaged();
 						bullet->Destroy();
 						score += 10;
 
-						if (enemy->As<UltraEnemy>()->IsDead())
+						if (uEnemy->IsDead())
 						{
 							isGameClear = true;
 						}
