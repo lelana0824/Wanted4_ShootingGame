@@ -67,6 +67,18 @@ UltraEnemy::UltraEnemy(const char* enemieChars)
 
 }
 
+UltraEnemy::~UltraEnemy()
+{
+    if (IsDead()) return;
+
+    for (Enemy* enemy : enemies)
+    {
+        SafeDelete(enemy);
+    }
+    enemies.clear(); 
+    bulletSpawners.clear();
+}
+
 void UltraEnemy::Tick(float deltaTime)
 {
     super::Tick(deltaTime);

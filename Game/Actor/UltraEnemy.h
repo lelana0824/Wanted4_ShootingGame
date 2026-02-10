@@ -12,6 +12,7 @@ class UltraEnemy : public Enemy
 
 public:
 	UltraEnemy(const char* enemies);
+	virtual ~UltraEnemy();
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged() override;
