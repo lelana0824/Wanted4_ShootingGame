@@ -353,7 +353,7 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 void GameLevel::ProcessCollisionPlayerAndItem()
 {
 	Player* player = nullptr;
-	Item* item = nullptr;
+	std::vector<Item*> items;
 
 	for (Actor* const actor : actors)
 	{
@@ -363,24 +363,26 @@ void GameLevel::ProcessCollisionPlayerAndItem()
 			continue;
 		}
 
-		if (!item && actor->IsTypeOf<Item>())
+		if (actor->IsTypeOf<Item>())
 		{
-			item = actor->As<Item>();
+			items.emplace_back(actor->As<Item>());
 			continue;
 		}
 	}
 
-	if (!item || !player)
+	if (items.size() == 0 || !player)
 	{
 		return;
 	}
 
-	if (item->TestIntersect(player))
+	for (Item* const item : items)
 	{
-		player->ConsumeItem(item);
-		item->Destroy();
+		if (item->TestIntersect(player))
+		{
+			player->ConsumeItem(item);
+			item->Destroy();
+		}
 	}
-
 }
 
 void GameLevel::ShowScore()
