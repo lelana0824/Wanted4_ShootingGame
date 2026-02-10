@@ -39,8 +39,8 @@ private:
 private:
 	// 발사 모드
 	FireMode fireMode = FireMode::None;
-	Item::FireDirectionType fireDirection = Item::FireDirectionType::All;
-	int bulletSpawnCount = 3;
+	Item::FireDirectionType fireDirection = Item::FireDirectionType::Top;
+	int bulletSpawnCount = 1;
 
 	Timer timer = Timer(0.2f);
 };

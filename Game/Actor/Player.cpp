@@ -30,7 +30,10 @@ void Player::ConsumeItem(Item* item)
 		bulletSpawnCount = item->GetBulletCount();
 	}
 
-	fireDirection = item->GetFireDirectionType();
+	if (item->GetBulletCount() == 1)
+	{
+		fireDirection = item->GetFireDirectionType();
+	}
 }
 
 void Player::Tick(float deltaTime)

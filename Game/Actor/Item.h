@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor/Actor.h"
+#include "Util/Timer.h"
 
 using namespace Wanted;
 
@@ -23,8 +24,11 @@ public:
 	inline int GetBulletCount() { return bulletCount; }
 	inline FireDirectionType GetFireDirectionType() { return fireDirection; }
 
+	virtual void Tick(float deltatime) override;
+
 private:
 	int bulletCount = 1;
 	FireDirectionType fireDirection = FireDirectionType::Top;
+	Timer disappearTimer;
 };
 
