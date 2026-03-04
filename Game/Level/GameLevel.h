@@ -24,6 +24,7 @@ private:
 	void ProcessCollisionPlayerAndEnemyBullet();
 	void ProcessCollisionPlayerAndUltraEnemy();
 	void ProcessCollisionPlayerAndItem();
+	void ProcessCollisionObstacleAndOther();
 
 	void ShowScore();
 	void ShowUltraEnemy();

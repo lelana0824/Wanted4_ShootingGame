@@ -18,6 +18,11 @@ Player::Player()
 	timer.SetTargetTime(0.2f);
 	sortingOrder = 10;
 
+	directionMap[Direction::Up] = Vector2(0, -1);
+	directionMap[Direction::Down] = Vector2(0, 1);
+	directionMap[Direction::Left] = Vector2(-1, 0);
+	directionMap[Direction::Right] = Vector2(1, 0);
+
 }
 
 Player::~Player()
@@ -52,18 +57,22 @@ void Player::Tick(float deltaTime)
 	// 입력 및 이동처리
 	if (Input::Get().GetKey(VK_LEFT))
 	{
+		currentDirection = directionMap[Direction::Left];
 		MoveLeft();
 	}
 	if (Input::Get().GetKey(VK_RIGHT))
 	{
+		currentDirection = directionMap[Direction::Right];
 		MoveRight();
 	}
 	if (Input::Get().GetKey(VK_UP))
 	{
+		currentDirection = directionMap[Direction::Up];
 		MoveUp();
 	}
 	if (Input::Get().GetKey(VK_DOWN))
 	{
+		currentDirection = directionMap[Direction::Down];
 		MoveDown();
 	}
 

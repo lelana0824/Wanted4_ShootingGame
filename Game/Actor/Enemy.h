@@ -21,7 +21,7 @@ public:
 public:
 	Enemy(const char* image = "@", int yPosition = 5);
 	Enemy(const char* image = "@", Vector2 position = Vector2::Zero, Color color = Color::Green);
-	~Enemy();
+	virtual ~Enemy();
 
 	virtual void Tick(float deltaTime) override;
 	virtual void OnDamaged();

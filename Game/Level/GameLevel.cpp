@@ -1,4 +1,5 @@
 #include "GameLevel.h"
+
 #include "Actor/Player.h"
 #include "Actor/Enemy.h"
 #include "Actor/PlayerBullet.h"
@@ -6,9 +7,11 @@
 #include "Actor/EnemySpawner.h"
 #include "Actor/SmallEnemy.h"
 #include "Actor/UltraEnemy.h"
+#include "Actor/Obstacle.h"
+#include "Actor/Item.h"
+
 #include "Render/Renderer.h"
 #include "Engine/Engine.h"
-#include "Actor/Item.h"
 
 #include <string>
 #include <iostream>
@@ -27,6 +30,7 @@ GameLevel::GameLevel()
 
 	AddNewActor(new EnemySpawner());
 	AddNewActor(new Player());
+	AddNewActor(new Obstacle());
 
 	deadEventTimer.SetTargetTime(3.0f);
 }
@@ -49,6 +53,7 @@ void GameLevel::Tick(float deltaTime)
 	ProcessCollisionPlayerAndEnemyBullet();
 	ProcessCollisionPlayerAndUltraEnemy();
 	ProcessCollisionPlayerAndItem();
+	ProcessCollisionObstacleAndOther();
 }
 
 void GameLevel::Draw()
@@ -396,6 +401,89 @@ void GameLevel::ProcessCollisionPlayerAndItem()
 		{
 			player->ConsumeItem(item);
 			item->Destroy();
+		}
+	}
+}
+
+void GameLevel::ProcessCollisionObstacleAndOther()
+{
+	Obstacle* obstacle = nullptr;
+	std::vector<Actor*> obstacleBody;
+	std::vector<Actor*> bullets;
+	std::vector<Actor*> enemies;
+
+	Player* player = nullptr;
+
+	// todo: 이 부분은 모든 액터를 찾지 말고
+	// 같은 액터만 보도록 수정을 시도한다.
+	// 변경 전 후 실제 성능이 차이나는지 체크해본다.
+	for (Actor* const actor : actors)
+	{
+		// todo:: bullet 클래스 추상화하기
+		if (actor->IsTypeOf<EnemyBullet>())
+		{
+			bullets.emplace_back(actor);
+			continue;
+		}
+
+		if (actor->IsTypeOf<PlayerBullet>())
+		{
+			bullets.emplace_back(actor);
+			continue;
+		}
+
+		if (actor->IsTypeOf<SmallEnemy>())
+		{
+			enemies.emplace_back(actor);
+			continue;
+		}
+
+		if (!player && actor->IsTypeOf<Player>())
+		{
+			player = actor->As<Player>();
+			continue;
+		}
+
+		if (!obstacle && actor->IsTypeOf<Obstacle>())
+		{
+			obstacle = actor->As<Obstacle>();
+			obstacleBody = obstacle->GetBody();
+			continue;
+		}
+	}
+
+	if (obstacleBody.size() == 0)
+	{
+		return;
+	}
+
+
+	// 충돌판정.
+	for (Actor* const obstaclePixel : obstacleBody)
+	{
+		for (Actor* const bullet : bullets)
+		{
+			if (bullet->TestIntersect(obstaclePixel))
+			{
+				bullet->Destroy();
+			}
+		}
+
+		for (Actor* const enemy : enemies)
+		{
+			if (enemy->TestIntersect(obstaclePixel))
+			{
+				enemy->Destroy();
+			}
+		}
+
+		if (player->TestIntersect(obstaclePixel))
+		{
+			Vector2 currentDirection = player->GetCurrentDirection();
+			player->SetPosition(Vector2(
+				player->GetPosition().x + (-currentDirection.x),
+				player->GetPosition().y + (-currentDirection.y)
+			));
 		}
 	}
 }

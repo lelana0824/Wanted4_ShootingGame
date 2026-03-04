@@ -25,8 +25,7 @@ AStar::~AStar()
 }
 
 std::vector<Node*> AStar::FindPath(
-	Node* startNode, Node* goalNode,
-	std::vector<std::vector<int>>& grid)
+	Node* startNode, Node* goalNode)
 {
 	// A* 알고리즘이 경로를 찾는 과정 구현
 
@@ -35,8 +34,7 @@ std::vector<Node*> AStar::FindPath(
 	this->goalNode = goalNode;
 
 	// 예외 처리.
-	if (!this->startNode || !this->goalNode
-		|| grid.empty() || grid[0].empty())
+	if (!this->startNode || !this->goalNode)
 	{
 		//return std::vector<Node*>();
 		return {}; // 반환 타입 보고 컴파일러가 알아서 해줌.
@@ -112,17 +110,11 @@ std::vector<Node*> AStar::FindPath(
 			int newY = currentNode->position.y + direction.y;
 
 			//  유효성 검증 (새 위치가 이동 가능한지 확인)
-			if (!IsInRange(newX, newY, grid))
+			if (!IsInRange(newX, newY))
 			{
 				continue;
 			}
 
-			// 새 위치가 이동 가능한 곳인지 확인.
-			// 장애물 = 1;
-			if (grid[newY][newX] == 1)
-			{
-				continue;
-			}
 
 			// 현재 노드를 기준으로 새 gCost 계산
 			float newGCost = currentNode->gCost + direction.cost;
@@ -177,20 +169,10 @@ std::vector<Node*> AStar::FindPath(
 				continue;
 			}
 
-			// 방문할 목록에 추가.
-			// 이 노드가 이동 가능한지 확인
-			// 이동 가능한 곳 = 0;
-			if (grid[newY][newX] == 0)
-			{
-				// 시각화를 위해 사용 안하는 값 정해서 설정.
-				grid[newY][newX] = 5;
-			}
 
 			// 열린리스트에 추가.
 			openList.emplace_back(neighborNode);
 
-			// 잠시 대기 (옵션)
-			DisplayGrid(grid);
 			DWORD delay = static_cast<DWORD>(0.05 * 1000);
 			Sleep(delay);
 		}
@@ -335,25 +317,15 @@ float AStar::CalculateHeuristic(
 	// 고민해볼 계산 방식.
 	// 현재노드에서 목표 노드까지의 비용 계산.
 	// 단순 거리를 휴리스틱 비용으로 계산.
-	Position diff = *currentNode - *goalNode;
+	Vector2 diff = *currentNode - *goalNode;
 	return static_cast<float>(
 		std::sqrt(diff.x * diff.x + diff.y * diff.y)
 		);
 }
 
-bool AStar::IsInRange(int x, int y,
-	const std::vector<std::vector<int>>& grid)
+bool AStar::IsInRange(int x, int y)
 {
-	if (grid.empty() || grid[0].empty()) return false;
 
-	// x,y 범위가 벗어났는지 확인.
-	if (
-		(x < 0 || x >= static_cast<int>(grid[0].size()))
-		|| (y < 0 || y >= static_cast<int>(grid.size()))
-		)
-	{
-		return false;
-	}
 	return true;
 }
 

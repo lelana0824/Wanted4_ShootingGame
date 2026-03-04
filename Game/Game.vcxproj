@@ -96,10 +96,12 @@
     <ClCompile Include="Actor\EnemyDestroyEffect.cpp" />
     <ClCompile Include="Actor\EnemySpawner.cpp" />
     <ClCompile Include="Actor\Item.cpp" />
+    <ClCompile Include="Actor\Obstacle.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\PlayerBullet.cpp" />
     <ClCompile Include="Actor\SmallEnemy.cpp" />
     <ClCompile Include="Actor\UltraEnemy.cpp" />
+    <ClCompile Include="Algorithm\Navigation\AStar.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Level\GameLevel.cpp" />
     <ClCompile Include="Level\TitleLevel.cpp" />
@@ -113,10 +115,13 @@
     <ClInclude Include="Actor\EnemyDestroyEffect.h" />
     <ClInclude Include="Actor\EnemySpawner.h" />
     <ClInclude Include="Actor\Item.h" />
+    <ClInclude Include="Actor\Obstacle.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\PlayerBullet.h" />
     <ClInclude Include="Actor\SmallEnemy.h" />
     <ClInclude Include="Actor\UltraEnemy.h" />
+    <ClInclude Include="Algorithm\Navigation\AStar.h" />
+    <ClInclude Include="Algorithm\Navigation\Node.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Level\GameLevel.h" />
     <ClInclude Include="Level\TitleLevel.h" />
