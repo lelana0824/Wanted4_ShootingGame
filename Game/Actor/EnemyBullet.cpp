@@ -3,10 +3,9 @@
 
 EnemyBullet::EnemyBullet(
 	const Vector2& position, float moveSpeed, Color color)
-	: super("!", position, color),
-	moveSpeed(moveSpeed),
-	yPosition(static_cast<float>(position.y))
+	: super(position, moveSpeed, color)
 {
+	yPosition = static_cast<float>(position.y);
 	//sortingOrder = 5;
 }
 

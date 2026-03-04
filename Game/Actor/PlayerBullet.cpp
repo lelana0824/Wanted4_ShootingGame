@@ -4,11 +4,11 @@
 PlayerBullet::PlayerBullet(
 	const Vector2& position,
 	const Vector2& sideDirection
-) :super("*", position, Color::Green),
-	xPosition(static_cast<float>(position.x)),
-	yPosition(static_cast<float>(position.y)),
-	sideDirection(sideDirection)
+) :super(position, 30.0f, Color::Green)
 {
+	this->xPosition = (static_cast<float>(position.x));
+	this->yPosition = (static_cast<float>(position.y));
+	this->sideDirection = sideDirection;
 
 }
 
