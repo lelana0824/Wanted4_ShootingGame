@@ -63,12 +63,13 @@ namespace Wanted
 #define RTTI_DECLARATIONS(Type, ParentType)												\
 friend class RTTI;																		\
 protected:																				\
+																						\
+public:																					\
 	static const size_t TypeIdClass()													\
 	{																					\
 		static int runTimeTypeId = 0;													\
 		return reinterpret_cast<size_t>(&runTimeTypeId);								\
 	}																					\
-public:																					\
 	virtual const size_t& GetType() const override { return Type::TypeIdClass(); }		\
 	using super = ParentType;															\
 	virtual bool Is(const size_t id) const override										\

@@ -2,16 +2,7 @@
 
 #include "Node.h"
 #include <vector>
-
-template<typename T>
-void SafeDelete(T*& t)
-{
-	if (t)
-	{
-		delete t;
-		t = nullptr;
-	}
-}
+#include "Util/Util.h"
 
 // 요즘 트렌드는 데이터 정의가 필요할때 구조체 씀.
 // 언리얼도 이 추세를 따름.

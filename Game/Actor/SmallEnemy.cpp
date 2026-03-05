@@ -3,13 +3,19 @@
 #include "Actor/EnemyDestroyEffect.h"
 #include "Engine/Engine.h"
 #include "Actor/EnemyBullet.h"
+#include "Actor/GuidedBullet.h"
+
 #include "Actor/Item.h"
 
-SmallEnemy::SmallEnemy(const char* image, int yPosition, MoveDirection direction)
+SmallEnemy::SmallEnemy(
+	const char* image, int yPosition, 
+	MoveDirection direction
+)
 	:super(image, yPosition)
 {
 	this->direction = direction;
 	this->yPosition = yPosition;
+
 
 	if (direction == MoveDirection::Left)
 	{
@@ -29,6 +35,14 @@ SmallEnemy::SmallEnemy(const char* image, int yPosition, MoveDirection direction
 	// 발사 타이머 목표 시간 설정.
 	timer.SetTargetTime(Util::RandomRange(1.0f, 3.0f));
 	firstAppearedTimer.SetTargetTime(1.0f);
+
+	// 플레이어 탐색 및 설정
+	Player* player = nullptr;
+
+	// todo: 이 부분은 모든 액터를 찾지 말고
+	// 같은 액터만 보도록 수정을 시도한다.
+	// 변경 전 후 실제 성능이 차이나는지 체크해본다.
+	
 }
 
 void SmallEnemy::Tick(float deltaTime)
@@ -78,11 +92,15 @@ void SmallEnemy::Tick(float deltaTime)
 
 	// 타이머 리셋
 	timer.Reset();
+	// todo: 플레이어 위치 파악. 레벨이 제일 적당.
+	Actor* player = 
+		GetOwner()->GetActorBy<Player>();
 
 	// 탄약 발사
 	GetOwner()->AddNewActor(
-		new EnemyBullet(
+		new GuidedBullet(
 			Vector2(position.x + width / 2, position.y),
+			player,
 			Util::RandomRange(10.0f, 20.0f)
 		)
 	);

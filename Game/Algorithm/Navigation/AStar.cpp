@@ -173,8 +173,6 @@ std::vector<Node*> AStar::FindPath(
 			// 열린리스트에 추가.
 			openList.emplace_back(neighborNode);
 
-			DWORD delay = static_cast<DWORD>(0.05 * 1000);
-			Sleep(delay);
 		}
 	}
 

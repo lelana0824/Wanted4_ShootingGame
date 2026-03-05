@@ -95,4 +95,16 @@ namespace Wanted
 
 		addRequestedActors.clear();
 	}
+
+	Actor* Level::GetFirstActorOfRTTI(const size_t typeId) {
+		for (Actor* actor : actors)
+		{
+			// 다형성을 지원하는 RTTI 검사 (상속 관계까지 확인됨)
+			if (actor->Is(typeId))
+			{
+				return actor;
+			}
+		}
+		return nullptr;
+	}
 }

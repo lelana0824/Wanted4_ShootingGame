@@ -293,6 +293,8 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 	{
 		if (bullet->TestIntersect(player))
 		{
+			// bullet에 함수 포인터 넣어서 호출하도록 수정
+			// bullet->Action(함수포인터);
 			health -= 1;
 
 			if (health <= 0)

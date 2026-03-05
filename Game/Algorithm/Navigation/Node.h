@@ -1,6 +1,6 @@
 #pragma once
 #include "Math/Vector2.h"
-
+#include "Util/Util.h"
 using namespace Wanted;
 
 class Node
@@ -12,6 +12,7 @@ public:
 	{
 
 	}
+	
 	Vector2 operator-(const Node& other) const
 	{
 		return Vector2(position.x - other.position.x,
