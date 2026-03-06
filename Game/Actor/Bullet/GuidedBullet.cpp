@@ -48,6 +48,8 @@ void GuidedBullet::Tick(float deltaTime)
 	if (nextPosition == Vector2::Zero)
 	{
 		// 충돌 처리 여부 확인.
+		// 얘는 또 여기있네. 근데 굳이 트리로 계산할 필요는 없다.
+
 		if (TestIntersect(target->As<Actor>()))
 		{
 			target->SetHealth(target->GetHealth() - 1);

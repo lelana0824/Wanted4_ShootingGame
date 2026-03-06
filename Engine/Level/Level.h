@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Common/RTTI.h"
+#include "Algorithm/Partition/QuadTree.h"
 
 namespace Wanted {
 	class  Actor;
@@ -38,6 +39,8 @@ namespace Wanted {
 		}
 
 		virtual std::vector<std::vector<int>>& Grid() = 0;
+		// 질의할때
+		std::vector<Actor*> Query(const Bounds& bounds);
 
 	protected:
 		std::vector<Actor*> actors;
@@ -49,6 +52,8 @@ namespace Wanted {
 		Actor* GetFirstActorOfRTTI(const size_t typeId);
 
 		std::vector<std::vector<int>> grid;
+
+		QuadTree* tree = new QuadTree(Bounds(0,0, 1000, 1000));
 	};
 
 }

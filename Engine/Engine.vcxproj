@@ -101,6 +101,10 @@ xcopy $(OutDir)\Engine.lib ..\Library\Engine\$(Platform)\$(Configuration)\ /e /y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor\Actor.cpp" />
+    <ClCompile Include="Algorithm\Navigation\AStar.cpp" />
+    <ClCompile Include="Algorithm\Partition\Bounds.cpp" />
+    <ClCompile Include="Algorithm\Partition\Node.cpp" />
+    <ClCompile Include="Algorithm\Partition\QuadTree.cpp" />
     <ClCompile Include="Core\Input.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Level\Level.cpp" />
@@ -110,6 +114,11 @@ xcopy $(OutDir)\Engine.lib ..\Library\Engine\$(Platform)\$(Configuration)\ /e /y
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Actor.h" />
+    <ClInclude Include="Algorithm\Navigation\AStar.h" />
+    <ClInclude Include="Algorithm\Navigation\Node.h" />
+    <ClInclude Include="Algorithm\Partition\Bounds.h" />
+    <ClInclude Include="Algorithm\Partition\Node.h" />
+    <ClInclude Include="Algorithm\Partition\QuadTree.h" />
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\RTTI.h" />
     <ClInclude Include="Core\Input.h" />

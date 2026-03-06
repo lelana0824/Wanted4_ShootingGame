@@ -1,7 +1,7 @@
 #include "QuadTree.h"
 
 QuadTree::QuadTree() {
-	root = new QuadTreeNode(Bounds(0,0));
+	root = new QuadTreeNode(Bounds(0,0, 1000, 1000));
 }
 
 QuadTree::QuadTree(const Bounds& bounds) {
@@ -19,13 +19,12 @@ void QuadTree::Insert(QuadTreeNode* node) {
 }
 
 
-std::vector<QuadTreeNode*> QuadTree::Query(QuadTreeNode* queryNode)
+std::vector<QuadTreeNode*> QuadTree::Query(const Bounds& bounds)
 {
-	if (!queryNode) return {};
 
 	// 겹침 가능성 있는 영역 확인.
 	std::vector<QuadTreeNode*> possibleNodes;
-	root->Query(queryNode->GetBounds(), possibleNodes);
+	root->Query(bounds, possibleNodes);
 
 	// 실제 겹치는 노드들만 확인
 	std::vector<QuadTreeNode*> intersects;
@@ -33,7 +32,7 @@ std::vector<QuadTreeNode*> QuadTree::Query(QuadTreeNode* queryNode)
 	{
 		for (QuadTreeNode* const point : node->Points())
 		{
-			if (point->GetBounds().Intersects(queryNode->GetBounds()))
+			if (point->GetBounds().Intersects(bounds))
 			{
 				intersects.emplace_back(point);
 				continue;

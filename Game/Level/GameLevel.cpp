@@ -27,32 +27,15 @@ GameLevel::GameLevel()
 
 	file.close();;
 
-	// 현재 문제는 AddNewActor 하는 부분이 파편화 되어있어.
-	// tree를 인자로 받게해야하나?
-	// Enemy, Player 각각 Bullet을 AddNewActor 하고있다.
 	AddNewActor(new EnemySpawner());
 	AddNewActor(new Player());
 	AddNewActor(new Obstacle());
-
-	tree.Insert(
-		new QuadTreeNode(
-			Bounds(0, 0), 
-			0,
-			nullptr
-		)
-	);
 
 	deadEventTimer.SetTargetTime(3.0f);
 
 	grid.assign(
 		Engine::Get().GetWidth(),
 		std::vector<int>(Engine::Get().GetHeight(), 0)
-	);
-	tree = Bounds(
-		0,
-		0,
-		Engine::Get().GetWidth(),
-		Engine::Get().GetHeight()
 	);
 }
 
@@ -244,7 +227,7 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 			continue;
 		}
 
-		if (actor->IsTypeOf<SmallEnemy>())
+		/*if (actor->IsTypeOf<SmallEnemy>())
 		{
 			enemies.emplace_back(actor->As<SmallEnemy>());
 		}
@@ -252,8 +235,12 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 		if (actor->IsTypeOf<UltraEnemy>())
 		{
 			enemies.emplace_back(actor->As<UltraEnemy>());
-		}
+		}*/
 	}
+
+	// 질의 노드가 필요함. 이걸 액터로 바꾸고 싶은데
+	// 그러려면 지금 구조가 아니라 액터가 Node를 소유하도록 변경해야함.
+
 
 	// 판정 안해도 되는지 확인.
 	if (bullets.size() == 0 || enemies.size() == 0)

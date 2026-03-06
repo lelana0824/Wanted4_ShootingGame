@@ -5,13 +5,13 @@
 class QuadTree
 {
 public:
-	QuadTree(const Bounds& bounds);
 	QuadTree();
+	QuadTree(const Bounds& bounds);
 	~QuadTree();
 
 	void Insert(QuadTreeNode* node);
 
-	std::vector<QuadTreeNode*> Query(QuadTreeNode* queryNode);
+	std::vector<QuadTreeNode*> Query(const Bounds& bounds);
 
 public:
 	static const int maxDepth = 5;

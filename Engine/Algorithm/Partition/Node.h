@@ -3,6 +3,7 @@
 #include "Util/Util.h"
 #include "Bounds.h"
 #include <vector>
+#include "Actor/Actor.h"
 
 // 영역 구분을 위한 열거형
 enum class NodeIndex
@@ -26,7 +27,6 @@ enum class NodeIndex
 
 class QuadTreeNode
 {
-	class Actor;
 public:
 	QuadTreeNode(
 		const Bounds& bounds,
@@ -58,6 +58,7 @@ public:
 	inline QuadTreeNode* TopRight() const { return topRight; }
 	inline QuadTreeNode* BottomLeft() const { return bottomLeft; }
 	inline QuadTreeNode* BottomRight() const { return bottomRight; }
+	inline Actor* GetActor() { return actor; }
 private:
 	// 4분할 함수
 	bool Subdivide();
@@ -88,6 +89,5 @@ private:
 	QuadTreeNode* bottomLeft = nullptr;
 	QuadTreeNode* bottomRight = nullptr;
 	Actor* actor = nullptr;
-
 };
 

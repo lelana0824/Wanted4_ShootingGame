@@ -1,6 +1,5 @@
 #include "Node.h"
 #include "QuadTree.h"
-#include "Actor/Actor.h"
 
 QuadTreeNode::QuadTreeNode(const Bounds& bounds, int depth, Actor* actor)
     : bounds(bounds), depth(depth), actor(actor)

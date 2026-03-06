@@ -44,7 +44,10 @@ namespace Wanted
 	}
 	void Level::Draw()
 	{
-		// 액터 순회하면서 Draw 함수 호출.
+		delete tree;
+		tree = new QuadTree(Bounds(0, 0, 1000, 1000));
+
+		// 액터 순회하면서 Draw 함수 호출 및 탐색트리 초기화
 		for (Actor* const actor : actors)
 		{
 			if (!actor->IsActive())
@@ -53,6 +56,14 @@ namespace Wanted
 			}
 
 			actor->Draw();
+
+			Vector2 position = actor->GetPosition();
+			tree->Insert(new QuadTreeNode(
+				Bounds(
+					position.x, position.y,
+					actor->GetWidth(), 1
+				), 0, actor
+			));
 		}
 	}
 	void Level::AddNewActor(Actor* newActor)
@@ -107,5 +118,17 @@ namespace Wanted
 			}
 		}
 		return nullptr;
+	}
+
+	std::vector<Actor*> Level::Query(const Bounds& bounds){
+		std::vector<QuadTreeNode*> found = tree->Query(bounds);
+		std::vector<Actor*> res;
+
+		for (QuadTreeNode* node : found)
+		{
+			res.emplace_back(node->GetActor());
+		}
+
+		return res;
 	}
 }

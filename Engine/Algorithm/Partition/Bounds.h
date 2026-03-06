@@ -2,7 +2,7 @@
 class Bounds
 {
 public:
-	Bounds(int x, int y, int width = 1, int height = 1)
+	Bounds(int x, int y, int width = 1000, int height = 1000)
 		: x(x), y(y), width(width), height(height) 
 	{
 
@@ -21,7 +21,7 @@ private:
 	int x = 0;
 	int y = 0;
 
-	int width = 1;
-	int height = 1;
+	int width = 1000;
+	int height = 1000;
 };
 

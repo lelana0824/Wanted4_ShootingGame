@@ -92,7 +92,6 @@ void SmallEnemy::Tick(float deltaTime)
 
 	// 타이머 리셋
 	timer.Reset();
-	// todo: 플레이어 위치 파악. 레벨이 제일 적당.
 	Actor* player = 
 		GetOwner()->GetActorBy<Player>();
 
