@@ -1,9 +1,9 @@
 #include "SmallEnemy.h"
 #include "Level/Level.h"
-#include "Actor/EnemyDestroyEffect.h"
+#include "Actor/Effects/EnemyDestroyEffect.h"
 #include "Engine/Engine.h"
-#include "Actor/EnemyBullet.h"
-#include "Actor/GuidedBullet.h"
+#include "Actor/Bullet/EnemyBullet.h"
+#include "Actor/Bullet/GuidedBullet.h"
 
 #include "Actor/Item.h"
 

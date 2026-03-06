@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor/Actor.h"
-#include "Actor/Enemy.h"
+#include "Actor/Enemy/Enemy.h"
 
 #include <vector>
 

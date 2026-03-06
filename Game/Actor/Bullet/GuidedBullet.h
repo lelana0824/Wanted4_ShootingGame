@@ -1,7 +1,7 @@
 #pragma once
 #include "Bullet.h"
-#include "../Algorithm/Navigation/Node.h"
-#include "../Algorithm/Navigation/AStar.h"
+#include "../../Algorithm/Navigation/Node.h"
+#include "../../Algorithm/Navigation/AStar.h"
 #include "Actor/Player.h"
 
 class GuidedBullet : public Bullet

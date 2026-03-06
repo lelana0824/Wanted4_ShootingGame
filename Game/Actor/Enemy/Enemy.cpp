@@ -1,9 +1,9 @@
 #include "Enemy.h"
 #include "Util/Util.h"
 #include "Engine/Engine.h"
-#include "Actor/EnemyBullet.h"
+#include "Actor/Bullet/EnemyBullet.h"
 #include "Level/Level.h"
-#include "Actor/EnemyDestroyEffect.h"
+#include "Actor/Effects/EnemyDestroyEffect.h"
 
 Enemy::Enemy(const char* image, int yPosition)
 	:super(image, Vector2(static_cast<int>(xPosition), yPosition), Color::Red), yPosition(yPosition)

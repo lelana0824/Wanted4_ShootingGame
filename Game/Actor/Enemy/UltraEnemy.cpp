@@ -1,12 +1,12 @@
 #include "UltraEnemy.h"
-#include "Actor/Enemy.h"
 #include "Level/Level.h"
-#include "Actor/SmallEnemy.h"
-#include "Actor/EnemyBullet.h"
+#include "Actor/Enemy/Enemy.h"
+#include "Actor/Enemy/SmallEnemy.h"
+#include "Actor/Bullet/EnemyBullet.h"
 #include "Util/Util.h"
 #include "Engine/Engine.h"
-#include "Actor/EnemyDestroyEffect.h"
-#include "Actor/DamagedEffect.h"
+#include "Actor/Effects/EnemyDestroyEffect.h"
+#include "Actor/Effects/DamagedEffect.h"
 
 #include <string>
 #include <sstream>

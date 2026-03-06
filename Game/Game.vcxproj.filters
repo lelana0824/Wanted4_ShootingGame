@@ -24,31 +24,31 @@
     <ClCompile Include="Actor\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\PlayerBullet.cpp">
+    <ClCompile Include="Actor\Bullet\PlayerBullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Util\Timer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\Enemy.cpp">
+    <ClCompile Include="Actor\Enemy\Enemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\EnemySpawner.cpp">
+    <ClCompile Include="Actor\Enemy\EnemySpawner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\EnemyBullet.cpp">
+    <ClCompile Include="Actor\Bullet\EnemyBullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\UltraEnemy.cpp">
+    <ClCompile Include="Actor\Enemy\UltraEnemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\EnemyDestroyEffect.cpp">
+    <ClCompile Include="Actor\Effects\EnemyDestroyEffect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\SmallEnemy.cpp">
+    <ClCompile Include="Actor\Enemy\SmallEnemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\DamagedEffect.cpp">
+    <ClCompile Include="Actor\Effects\DamagedEffect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Level\TitleLevel.cpp">
@@ -66,10 +66,10 @@
     <ClCompile Include="Actor\Obstacle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\Bullet.cpp">
+    <ClCompile Include="Actor\Bullet\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\GuidedBullet.cpp">
+    <ClCompile Include="Actor\Bullet\GuidedBullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Algorithm\Partition\Bounds.cpp">
@@ -89,31 +89,31 @@
     <ClInclude Include="Actor\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\PlayerBullet.h">
+    <ClInclude Include="Actor\Bullet\PlayerBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Util\Timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\Enemy.h">
+    <ClInclude Include="Actor\Enemy\Enemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\EnemySpawner.h">
+    <ClInclude Include="Actor\Enemy\EnemySpawner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\EnemyBullet.h">
+    <ClInclude Include="Actor\Bullet\EnemyBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\UltraEnemy.h">
+    <ClInclude Include="Actor\Enemy\UltraEnemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\EnemyDestroyEffect.h">
+    <ClInclude Include="Actor\Effects\EnemyDestroyEffect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\SmallEnemy.h">
+    <ClInclude Include="Actor\Enemy\SmallEnemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\DamagedEffect.h">
+    <ClInclude Include="Actor\Effects\DamagedEffect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Level\TitleLevel.h">
@@ -134,10 +134,10 @@
     <ClInclude Include="Actor\Obstacle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\Bullet.h">
+    <ClInclude Include="Actor\Bullet\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Actor\GuidedBullet.h">
+    <ClInclude Include="Actor\Bullet\GuidedBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Algorithm\Partition\Bounds.h">

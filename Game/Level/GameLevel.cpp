@@ -1,11 +1,11 @@
 #include "GameLevel.h"
 
-#include "Actor/Enemy.h"
-#include "Actor/PlayerBullet.h"
-#include "Actor/EnemyBullet.h"
-#include "Actor/EnemySpawner.h"
-#include "Actor/SmallEnemy.h"
-#include "Actor/UltraEnemy.h"
+#include "Actor/Enemy/Enemy.h"
+#include "Actor/Bullet/PlayerBullet.h"
+#include "Actor/Bullet/EnemyBullet.h"
+#include "Actor/Enemy/EnemySpawner.h"
+#include "Actor/Enemy/SmallEnemy.h"
+#include "Actor/Enemy/UltraEnemy.h"
 #include "Actor/Obstacle.h"
 #include "Actor/Item.h"
 
@@ -27,9 +27,20 @@ GameLevel::GameLevel()
 
 	file.close();;
 
+	// 현재 문제는 AddNewActor 하는 부분이 파편화 되어있어.
+	// tree를 인자로 받게해야하나?
+	// Enemy, Player 각각 Bullet을 AddNewActor 하고있다.
 	AddNewActor(new EnemySpawner());
 	AddNewActor(new Player());
 	AddNewActor(new Obstacle());
+
+	tree.Insert(
+		new QuadTreeNode(
+			Bounds(0, 0), 
+			0,
+			nullptr
+		)
+	);
 
 	deadEventTimer.SetTargetTime(3.0f);
 
