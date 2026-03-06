@@ -227,7 +227,7 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 			continue;
 		}
 
-		/*if (actor->IsTypeOf<SmallEnemy>())
+		if (actor->IsTypeOf<SmallEnemy>())
 		{
 			enemies.emplace_back(actor->As<SmallEnemy>());
 		}
@@ -235,7 +235,7 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 		if (actor->IsTypeOf<UltraEnemy>())
 		{
 			enemies.emplace_back(actor->As<UltraEnemy>());
-		}*/
+		}
 	}
 
 	// 질의 노드가 필요함. 이걸 액터로 바꾸고 싶은데
