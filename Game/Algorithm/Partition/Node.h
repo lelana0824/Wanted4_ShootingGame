@@ -1,18 +1,8 @@
 #pragma once
 
+#include "Util/Util.h"
 #include "Bounds.h"
 #include <vector>
-
-// 메모리 삭제 헬퍼 함수
-template<typename T>
-void SafeDelete(T*& t)
-{
-	if (t)
-	{
-		delete t;
-		t = nullptr;
-	}
-}
 
 // 영역 구분을 위한 열거형
 enum class NodeIndex
@@ -34,21 +24,26 @@ enum class NodeIndex
 // 책임을 수행하는데 필요한 기능을 정리하고
 // 메소드를 구현하는데 필요한 속성을 정의하자.
 
-class Node
+class QuadTreeNode
 {
+	class Actor;
 public:
-	Node(const Bounds& bounds, int depth = 0);
-	~Node();
+	QuadTreeNode(
+		const Bounds& bounds,
+		int depth = 0,
+		Actor* actor = nullptr
+	);
+	~QuadTreeNode();
 
 	// 삽입(Insert).
-	void Insert(Node* node);
+	void Insert(QuadTreeNode* node);
 
 	// 질의(Query-물어보기).
 	// bounds: 영역 테스트 요청 값.
 	// possibleNodes: 전달된 영역을 관리할 가능성이 있는 노드 목록.
 	void Query(
 		const Bounds& bounds,
-		std::vector<Node*>& possibleNodes
+		std::vector<QuadTreeNode*>& possibleNodes
 	);
 
 	// 정리.
@@ -56,14 +51,13 @@ public:
 
 	// Getter.
 	inline const Bounds& GetBounds() const { return bounds; }
-
-	inline const std::vector<Node*>& Points() const { return points; }
+	inline const std::vector<QuadTreeNode*>& Points() const { return points; }
 
 	// 자식노드.
-	inline Node* TopLeft() const { return topLeft; }
-	inline Node* TopRight() const { return topRight; }
-	inline Node* BottomLeft() const { return bottomLeft; }
-	inline Node* BottomRight() const { return bottomRight; }
+	inline QuadTreeNode* TopLeft() const { return topLeft; }
+	inline QuadTreeNode* TopRight() const { return topRight; }
+	inline QuadTreeNode* BottomLeft() const { return bottomLeft; }
+	inline QuadTreeNode* BottomRight() const { return bottomRight; }
 private:
 	// 4분할 함수
 	bool Subdivide();
@@ -86,13 +80,14 @@ private:
 	Bounds bounds;
 
 	// 현재 영역에 포함된 노드(목록)
-	std::vector<Node*> points;
+	std::vector<QuadTreeNode*> points;
 
 	// 자식 노드 (4개의 자식 노드)
-	Node* topLeft = nullptr;
-	Node* topRight = nullptr;
-	Node* bottomLeft = nullptr;
-	Node* bottomRight = nullptr;
+	QuadTreeNode* topLeft = nullptr;
+	QuadTreeNode* topRight = nullptr;
+	QuadTreeNode* bottomLeft = nullptr;
+	QuadTreeNode* bottomRight = nullptr;
+	Actor* actor = nullptr;
 
 };
 

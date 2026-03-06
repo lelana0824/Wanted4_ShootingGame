@@ -3,6 +3,7 @@
 #include "Math/Vector2.h"
 #include "Util/Timer.h"
 #include "Actor/Player.h"
+#include "Algorithm/Partition/QuadTree.h"
 
 #include <sstream>
 
@@ -55,5 +56,6 @@ private:
 	std::stringstream ultraEnemyBuffer;
 
 	Timer deadEventTimer;
+	QuadTree tree;
 };
 

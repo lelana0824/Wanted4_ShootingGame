@@ -104,6 +104,9 @@
     <ClCompile Include="Actor\SmallEnemy.cpp" />
     <ClCompile Include="Actor\UltraEnemy.cpp" />
     <ClCompile Include="Algorithm\Navigation\AStar.cpp" />
+    <ClCompile Include="Algorithm\Partition\Bounds.cpp" />
+    <ClCompile Include="Algorithm\Partition\Node.cpp" />
+    <ClCompile Include="Algorithm\Partition\QuadTree.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Level\GameLevel.cpp" />
     <ClCompile Include="Level\TitleLevel.cpp" />
@@ -126,6 +129,9 @@
     <ClInclude Include="Actor\UltraEnemy.h" />
     <ClInclude Include="Algorithm\Navigation\AStar.h" />
     <ClInclude Include="Algorithm\Navigation\Node.h" />
+    <ClInclude Include="Algorithm\Partition\Bounds.h" />
+    <ClInclude Include="Algorithm\Partition\Node.h" />
+    <ClInclude Include="Algorithm\Partition\QuadTree.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Level\GameLevel.h" />
     <ClInclude Include="Level\TitleLevel.h" />

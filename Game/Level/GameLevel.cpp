@@ -37,6 +37,12 @@ GameLevel::GameLevel()
 		Engine::Get().GetWidth(),
 		std::vector<int>(Engine::Get().GetHeight(), 0)
 	);
+	tree = Bounds(
+		0,
+		0,
+		Engine::Get().GetWidth(),
+		Engine::Get().GetHeight()
+	);
 }
 
 GameLevel::~GameLevel()

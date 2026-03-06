@@ -1,17 +1,18 @@
 #include "Node.h"
 #include "QuadTree.h"
+#include "Actor/Actor.h"
 
-Node::Node(const Bounds& bounds, int depth)
-    : bounds(bounds), depth(depth)
+QuadTreeNode::QuadTreeNode(const Bounds& bounds, int depth, Actor* actor)
+    : bounds(bounds), depth(depth), actor(actor)
 {
 
 }
-Node::~Node()
+QuadTreeNode::~QuadTreeNode()
 {
     Clear();
 }
 
-void Node::Insert(Node* node)
+void QuadTreeNode::Insert(QuadTreeNode* node)
 {
     if (!node) return;
 
@@ -59,9 +60,9 @@ void Node::Insert(Node* node)
     // 경우의 수2: 영역 밖에 있는 경우(OutOfArea). 아무 처리 안함.
 }
 
-void Node::Query(
+void QuadTreeNode::Query(
     const Bounds& bounds, 
-    std::vector<Node*>& possibleNodes)
+    std::vector<QuadTreeNode*>& possibleNodes)
 {
     // 현재 노드를 추가하고 이후 과정 진행.
     possibleNodes.emplace_back(this);
@@ -97,7 +98,7 @@ void Node::Query(
     }
 }
 
-void Node::Clear()
+void QuadTreeNode::Clear()
 {
     // points에 추가되는 노드는 외부에서 관리하는 노드이기 때문에
     // 여기에서는 메모리 관리하지않음.
@@ -117,7 +118,7 @@ void Node::Clear()
     }
 }
 
-bool Node::Subdivide()
+bool QuadTreeNode::Subdivide()
 {
     // 최대 깊이 (임시값 사용) 도달했는지 확인
     if (depth == 5)
@@ -135,22 +136,22 @@ bool Node::Subdivide()
         int halfHeight = bounds.Height() / 2;
 
         // 각 4분면의 자식 객체 생성
-        topLeft = new Node(
+        topLeft = new QuadTreeNode(
             Bounds(x, y, halfWidth, halfHeight),
             depth + 1
         );
 
-        topRight = new Node(
+        topRight = new QuadTreeNode(
             Bounds(x + halfWidth, y, halfWidth, halfHeight),
             depth + 1
         );
 
-        bottomLeft = new Node(
+        bottomLeft = new QuadTreeNode(
             Bounds(x, y + halfHeight, halfWidth, halfHeight),
             depth + 1
         );
 
-        bottomRight = new Node(
+        bottomRight = new QuadTreeNode(
             Bounds(x + halfWidth, y + halfHeight, halfWidth, halfHeight),
             depth + 1
         );
@@ -158,14 +159,14 @@ bool Node::Subdivide()
     return true;
 }
 
-bool Node::IsDivided()
+bool QuadTreeNode::IsDivided()
 {
     // 분할할때는 모든 자식노드가 null이 아니기 때문에 
     // 하나의 자식만 파악해도 됨.
     return topLeft != nullptr;
 }
 
-NodeIndex Node::TestRegion(const Bounds& bounds)
+NodeIndex QuadTreeNode::TestRegion(const Bounds& bounds)
 {
     std::vector<NodeIndex> quads = GetQuads(bounds);
 
@@ -179,7 +180,7 @@ NodeIndex Node::TestRegion(const Bounds& bounds)
     return NodeIndex::Straddling;
 }
 
-std::vector<NodeIndex> Node::GetQuads(const Bounds& bounds)
+std::vector<NodeIndex> QuadTreeNode::GetQuads(const Bounds& bounds)
 {
     // 겹치는 영역 반환을 위한 변수
     std::vector<NodeIndex> quads;
@@ -228,7 +229,7 @@ std::vector<NodeIndex> Node::GetQuads(const Bounds& bounds)
     return quads;
 }
 
-void Node::ClearChildren()
+void QuadTreeNode::ClearChildren()
 {
     if (IsDivided())
     {
