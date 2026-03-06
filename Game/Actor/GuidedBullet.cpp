@@ -6,7 +6,7 @@
 
 GuidedBullet::GuidedBullet(
 	const Vector2& position,
-	const Actor* target,
+	Player* target,
 	float moveSpeed,
 	Color color)
 	:super(position, moveSpeed, color), target(target)
@@ -17,16 +17,7 @@ GuidedBullet::GuidedBullet(
 	goalNode = new Node(target->GetPosition().x, 
 		target->GetPosition().y);
 
-	// 생성 시점에 딱 한번 path를 도출한다.
-	path = aStar.FindPath(startNode, goalNode);
-
-	if (path.size() > 0)
-	{
-		path.erase(path.begin() + 0); // startNode가 맨 처음 있으므로 그건 빼줘야함.
-
-		nextPosition = path[0]->position;
-		path.erase(path.begin() + 0);
-	}
+	
 }
 
 GuidedBullet::~GuidedBullet()
@@ -38,14 +29,32 @@ void GuidedBullet::Tick(float deltaTime)
 {
 	super::Tick(deltaTime);
 
+	if (!findedPath)
+	{
+		auto& grid = GetOwner()->Grid();
+		path = aStar.FindPath(startNode, goalNode, grid);
+
+		if (path.size() > 0)
+		{
+			// startNode가 맨 처음 있으므로 그건 빼줘야함.
+			path.erase(path.begin() + 0); 
+
+			nextPosition = path[0]->position;
+			path.erase(path.begin() + 0);
+		}
+		findedPath = true;
+	}
+
 	if (nextPosition == Vector2::Zero)
 	{
 		// 충돌 처리 여부 확인.
-		if (TestIntersect(target))
+		if (TestIntersect(target->As<Actor>()))
 		{
-			// todo: 받은 액션 함수 호출.
+			target->SetHealth(target->GetHealth() - 1);
+			Destroy();
+			return;
 		}
-		;
+
 		Destroy();
 		return;
 	}

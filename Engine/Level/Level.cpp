@@ -96,6 +96,7 @@ namespace Wanted
 		addRequestedActors.clear();
 	}
 
+
 	Actor* Level::GetFirstActorOfRTTI(const size_t typeId) {
 		for (Actor* actor : actors)
 		{

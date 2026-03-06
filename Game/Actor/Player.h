@@ -34,6 +34,10 @@ public:
 	void ConsumeItem(Item* item);
 	// Getter
 	Vector2& GetCurrentDirection() { return currentDirection; }
+	inline int GetHealth() { return health; }
+	inline int SetHealth(int newHealth) { return health = newHealth; }
+	inline bool GetIsPlayerDead() { return health == 0; }
+
 private:
 	virtual void Tick(float deltaTime) override;
 
@@ -49,6 +53,8 @@ private:
 	// 발사 가능 여부 확인
 	bool CanShoot() const;
 
+	
+
 private:
 	// 발사 모드
 	FireMode fireMode = FireMode::None;
@@ -57,5 +63,8 @@ private:
 
 	Timer timer = Timer(0.2f);
 	Vector2 currentDirection = Vector2::Zero;
+
+	// 플레이어 체력
+	int health = 50;
 };
 

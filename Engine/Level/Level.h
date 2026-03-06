@@ -37,6 +37,8 @@ namespace Wanted {
 			return nullptr;
 		}
 
+		virtual std::vector<std::vector<int>>& Grid() = 0;
+
 	protected:
 		std::vector<Actor*> actors;
 
@@ -45,6 +47,8 @@ namespace Wanted {
 
 		// 핵심 검색 로직을 담당하는 비템플릿 함수
 		Actor* GetFirstActorOfRTTI(const size_t typeId);
+
+		std::vector<std::vector<int>> grid;
 	};
 
 }

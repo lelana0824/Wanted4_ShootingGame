@@ -1,6 +1,5 @@
 #include "GameLevel.h"
 
-#include "Actor/Player.h"
 #include "Actor/Enemy.h"
 #include "Actor/PlayerBullet.h"
 #include "Actor/EnemyBullet.h"
@@ -33,6 +32,11 @@ GameLevel::GameLevel()
 	AddNewActor(new Obstacle());
 
 	deadEventTimer.SetTargetTime(3.0f);
+
+	grid.assign(
+		Engine::Get().GetWidth(),
+		std::vector<int>(Engine::Get().GetHeight(), 0)
+	);
 }
 
 GameLevel::~GameLevel()
@@ -162,7 +166,7 @@ void GameLevel::Draw()
 	}
 
 	// game over
-	if (isPlayerDead)
+	if (player && player->GetIsPlayerDead())
 	{
 		// 플레이어 죽음 메시지 Renderer에 제출.
 		Renderer::Get().Submit("!Dead!", playerDeadPosition);
@@ -182,6 +186,31 @@ void GameLevel::Draw()
 
 	// 점수 보여주기.
 	ShowScore();
+}
+
+std::vector<std::vector<int>>& GameLevel::Grid()
+{
+	
+
+	std::vector<Actor*> obstacleBody;
+	for (Actor* const actor : actors)
+	{
+		if (actor->IsTypeOf<Obstacle>())
+		{
+
+			obstacleBody = actor->
+				As<Obstacle>()->GetBody();
+			continue;
+		}
+	}
+
+	for (Actor* obstacle : obstacleBody)
+	{
+		Vector2 position = obstacle->GetPosition();
+		grid[position.y][position.x] = 1;
+	}
+
+	return grid;
 }
 
 void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
@@ -265,7 +294,6 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 {
 	// 액터 필터링을 위한 변수.
-	Player* player = nullptr;
 	std::vector<Actor*> bullets;
 
 	for (Actor* const actor : actors)
@@ -295,14 +323,11 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 		{
 			// bullet에 함수 포인터 넣어서 호출하도록 수정
 			// bullet->Action(함수포인터);
-			health -= 1;
+			player->SetHealth(player->GetHealth() - 1);
 
-			if (health <= 0)
+			if (player->GetIsPlayerDead())
 			{
-				isPlayerDead = true;
-
 				playerDeadPosition = player->GetPosition();
-
 				player->Destroy();
 				break;
 			}
@@ -314,7 +339,6 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 
 void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 {
-	Player* player = nullptr;
 	UltraEnemy* uEnemy = nullptr;
 	std::vector<Enemy*> enemies;
 
@@ -356,14 +380,11 @@ void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
 		{
 			if (uEnemy->GetCanHitOtherActor() && enemy->TestIntersect(player))
 			{
-				health -= 1;
+				player->SetHealth(player->GetHealth() - 1);
 
-				if (health <= 0)
+				if (player->GetIsPlayerDead())
 				{
-					isPlayerDead = true;
-
 					playerDeadPosition = player->GetPosition();
-
 					player->Destroy();
 					break;
 				}
@@ -492,7 +513,9 @@ void GameLevel::ProcessCollisionObstacleAndOther()
 
 void GameLevel::ShowScore()
 {
-	sprintf_s(scoreString, 128, "Score: %d    Health: %d", score, health);
+	if (!player) return;
+
+	sprintf_s(scoreString, 128, "Score: %d    Health: %d", score, player->GetHealth());
 	Renderer::Get().Submit(
 		scoreString,
 		Vector2(0, 0)

@@ -44,6 +44,7 @@ public:
 
 	virtual void Tick(float deltaTime) override;
 	virtual void Draw() override;
+	virtual std::vector<std::vector<int>>& Grid() override { return grid; }
 
 private:
 	// 현재 활성화된 메뉴 아이템 인덱스

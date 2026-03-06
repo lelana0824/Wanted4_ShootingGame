@@ -25,7 +25,9 @@ AStar::~AStar()
 }
 
 std::vector<Node*> AStar::FindPath(
-	Node* startNode, Node* goalNode)
+	Node* startNode, Node* goalNode,
+	std::vector<std::vector<int>>& grid
+	)
 {
 	// A* 알고리즘이 경로를 찾는 과정 구현
 
@@ -34,7 +36,8 @@ std::vector<Node*> AStar::FindPath(
 	this->goalNode = goalNode;
 
 	// 예외 처리.
-	if (!this->startNode || !this->goalNode)
+	if (!this->startNode || !this->goalNode
+		|| grid.empty() || grid[0].empty())
 	{
 		//return std::vector<Node*>();
 		return {}; // 반환 타입 보고 컴파일러가 알아서 해줌.
@@ -110,11 +113,17 @@ std::vector<Node*> AStar::FindPath(
 			int newY = currentNode->position.y + direction.y;
 
 			//  유효성 검증 (새 위치가 이동 가능한지 확인)
-			if (!IsInRange(newX, newY))
+			if (!IsInRange(newX, newY, grid))
 			{
 				continue;
 			}
 
+			// 새 위치가 이동 가능한 곳인지 확인.
+			// 장애물 = 1;
+			if (grid[newY][newX] == 1)
+			{
+				continue;
+			}
 
 			// 현재 노드를 기준으로 새 gCost 계산
 			float newGCost = currentNode->gCost + direction.cost;
@@ -321,9 +330,20 @@ float AStar::CalculateHeuristic(
 		);
 }
 
-bool AStar::IsInRange(int x, int y)
+bool AStar::IsInRange(int x, int y,
+	std::vector<std::vector<int>>& grid
+)
 {
+	if (grid.empty() || grid[0].empty()) return false;
 
+	// x,y 범위가 벗어났는지 확인.
+	if (
+		(x < 0 || x >= static_cast<int>(grid[0].size()))
+		|| (y < 0 || y >= static_cast<int>(grid.size()))
+		)
+	{
+		return false;
+	}
 	return true;
 }
 

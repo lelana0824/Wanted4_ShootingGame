@@ -29,7 +29,8 @@ public:
 	// goalNode: 목표지점
 	// grid: 탐색할 맵 (2차원 배열).
 	std::vector<Node*> FindPath(
-		Node* startNode, Node* goalNode
+		Node* startNode, Node* goalNode,
+		std::vector<std::vector<int>>& grid
 	);
 
 	// 맵 출력 함수.
@@ -50,7 +51,7 @@ private:
 
 	// 탐색하려는 위치(노드)가 그리그 범위 안에 있는지 확인
 	// 유효성 검증.
-	bool IsInRange(int x, int y);
+	bool IsInRange(int x, int y, std::vector<std::vector<int>>& grid);
 
 	// 이미 방문했는지 확인하는 함수.
 	bool HasVisited(int x, int y, float gCost);

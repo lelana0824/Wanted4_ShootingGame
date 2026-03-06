@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "../Algorithm/Navigation/Node.h"
 #include "../Algorithm/Navigation/AStar.h"
+#include "Actor/Player.h"
 
 class GuidedBullet : public Bullet
 {
@@ -10,7 +11,7 @@ class GuidedBullet : public Bullet
 public:
 	GuidedBullet(
 		const Vector2& position,
-		const Actor* targetActor,
+		Player* targetActor,
 		float moveSpeed = 15.0f,
 		Color color = Color::White
 	);
@@ -28,6 +29,8 @@ private:
 	AStar aStar;
 	std::vector<Node*> path;
 	Vector2 nextPosition;
-	const Actor* target;
+	Player* target;
+
+	bool findedPath = false;
 };
 
