@@ -285,7 +285,7 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 		if (!player && actor->IsTypeOf<Player>())
 		{
 			player = actor->As<Player>();
-			continue;
+			break;
 		}
 	}
 
@@ -319,33 +319,29 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 void GameLevel::ProcessCollisionPlayerAndItem()
 {
 	Player* player = nullptr;
-	std::vector<Item*> items;
 
 	for (Actor* const actor : actors)
 	{
 		if (!player && actor->IsTypeOf<Player>())
 		{
 			player = actor->As<Player>();
-			continue;
-		}
-
-		if (actor->IsTypeOf<Item>())
-		{
-			items.emplace_back(actor->As<Item>());
-			continue;
+			break;
 		}
 	}
 
-	if (items.size() == 0 || !player)
+	if (!player)
 	{
 		return;
 	}
 
-	for (Item* const item : items)
+	Vector2 playerPosition = player->GetPosition();
+	for (Actor* item : Query(
+		Bounds(playerPosition.x, playerPosition.y)
+	))
 	{
-		if (item->TestIntersect(player))
+		if (item->IsTypeOf<Item>() && item->TestIntersect(player))
 		{
-			player->ConsumeItem(item);
+			player->ConsumeItem(item->As<Item>());
 			item->Destroy();
 		}
 	}
