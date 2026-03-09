@@ -349,47 +349,13 @@ void GameLevel::ProcessCollisionPlayerAndItem()
 
 void GameLevel::ProcessCollisionObstacleAndOther()
 {
-	Obstacle* obstacle = nullptr;
 	std::vector<Actor*> obstacleBody;
-	std::vector<Actor*> bullets;
-	std::vector<Actor*> enemies;
 
-	Player* player = nullptr;
-
-	// todo: 이 부분은 모든 액터를 찾지 말고
-	// 같은 액터만 보도록 수정을 시도한다.
-	// 변경 전 후 실제 성능이 차이나는지 체크해본다.
 	for (Actor* const actor : actors)
 	{
-		// todo:: bullet 클래스 추상화하기
-		if (actor->IsTypeOf<EnemyBullet>())
+		if (actor->IsTypeOf<Obstacle>())
 		{
-			bullets.emplace_back(actor);
-			continue;
-		}
-
-		if (actor->IsTypeOf<PlayerBullet>())
-		{
-			bullets.emplace_back(actor);
-			continue;
-		}
-
-		if (actor->IsTypeOf<SmallEnemy>())
-		{
-			enemies.emplace_back(actor);
-			continue;
-		}
-
-		if (!player && actor->IsTypeOf<Player>())
-		{
-			player = actor->As<Player>();
-			continue;
-		}
-
-		if (!obstacle && actor->IsTypeOf<Obstacle>())
-		{
-			obstacle = actor->As<Obstacle>();
-			obstacleBody = obstacle->GetBody();
+			obstacleBody = actor->As<Obstacle>()->GetBody();
 			continue;
 		}
 	}
@@ -400,32 +366,26 @@ void GameLevel::ProcessCollisionObstacleAndOther()
 	}
 
 
-	// 충돌판정.
 	for (Actor* const obstaclePixel : obstacleBody)
 	{
-		for (Actor* const bullet : bullets)
-		{
-			if (bullet->TestIntersect(obstaclePixel))
-			{
-				bullet->Destroy();
-			}
-		}
+		Vector2 obstaclePosition = obstaclePixel->GetPosition();
 
-		for (Actor* const enemy : enemies)
+		for (Actor* const actor : 
+			Query(Bounds(obstaclePosition.x, obstaclePosition.y)))
 		{
-			if (enemy->TestIntersect(obstaclePixel))
+			// 플레이어는 벽에 밀려나고 그 외 Bullet은 모두 파괴
+			if (actor->IsTypeOf<Player>() && obstaclePixel->TestIntersect(actor))
 			{
-				enemy->Destroy();
+				Vector2 currentDirection = actor->As<Player>()->GetCurrentDirection();
+				actor->SetPosition(Vector2(
+					actor->GetPosition().x + (-currentDirection.x),
+					actor->GetPosition().y + (-currentDirection.y)
+				));
 			}
-		}
-
-		if (player->TestIntersect(obstaclePixel))
-		{
-			Vector2 currentDirection = player->GetCurrentDirection();
-			player->SetPosition(Vector2(
-				player->GetPosition().x + (-currentDirection.x),
-				player->GetPosition().y + (-currentDirection.y)
-			));
+			else if (actor->IsTypeOf<Bullet>() && obstaclePixel->TestIntersect(actor))
+			{
+				actor->Destroy();
+			}
 		}
 	}
 }
