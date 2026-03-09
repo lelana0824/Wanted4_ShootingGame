@@ -55,7 +55,6 @@ void GameLevel::Tick(float deltaTime)
 
 	ProcessCollisionPlayerBulletAndEnemy();
 	ProcessCollisionPlayerAndEnemyBullet();
-	ProcessCollisionPlayerAndUltraEnemy();
 	ProcessCollisionPlayerAndItem();
 	ProcessCollisionObstacleAndOther();
 }
@@ -313,62 +312,6 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 			}
 
 			bullet->Destroy();
-		}
-	}
-}
-
-void GameLevel::ProcessCollisionPlayerAndUltraEnemy()
-{
-	UltraEnemy* uEnemy = nullptr;
-	std::vector<Enemy*> enemies;
-
-	for (Actor* const actor : actors)
-	{
-		if (actor->IsTypeOf<SmallEnemy>())
-		{
-			continue;
-		}
-
-		if (!player && actor->IsTypeOf<Player>())
-		{
-			player = actor->As<Player>();
-			continue;
-		}
-
-		if (!uEnemy && actor->IsTypeOf<UltraEnemy>())
-		{
-			uEnemy = actor->As<UltraEnemy>();
-			continue;
-		}
-
-		if (actor->IsTypeOf<Enemy>())
-		{
-			enemies.emplace_back(actor->As<Enemy>());
-		}
-	}
-
-	if (enemies.size() == 0 || !player)
-	{
-		return;
-	}
-
-
-	// 충돌판정.
-	for (Enemy* const enemy : enemies)
-	{
-		if (enemy->GetCanHitOtherActor())
-		{
-			if (uEnemy->GetCanHitOtherActor() && enemy->TestIntersect(player))
-			{
-				player->SetHealth(player->GetHealth() - 1);
-
-				if (player->GetIsPlayerDead())
-				{
-					playerDeadPosition = player->GetPosition();
-					player->Destroy();
-					break;
-				}
-			}
 		}
 	}
 }
