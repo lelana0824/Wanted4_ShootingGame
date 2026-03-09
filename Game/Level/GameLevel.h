@@ -9,6 +9,7 @@
 
 using namespace Wanted;
 
+class UltraEnemy;
 class GameLevel : public Level
 {
 	RTTI_DECLARATIONS(GameLevel, Level)
@@ -45,10 +46,11 @@ private:
 	char scoreString[128] = {};
 
 	// 대형 유닛 소환을 위한 목표 점수
-	int targetScoreForShowingUltraEnemy = 50;
+	int targetScoreForShowingUltraEnemy = 0;
 
 	// 대형 유닛 소환 여부
 	bool hasShownUltraEnemy = false;
+	UltraEnemy* ultraEnemy = nullptr;
 
 	bool isGameClear = false;
 

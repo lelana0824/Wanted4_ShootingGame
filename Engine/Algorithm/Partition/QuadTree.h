@@ -15,9 +15,10 @@ public:
 
 public:
 	static const int maxDepth = 5;
+	QuadTreeNode* root = nullptr;
+
 
 private:
-	QuadTreeNode* root = nullptr;
 
 };
 
