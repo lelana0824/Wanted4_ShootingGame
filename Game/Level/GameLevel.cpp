@@ -281,9 +281,6 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 
 void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 {
-	// 액터 필터링을 위한 변수.
-	std::vector<Actor*> bullets;
-
 	for (Actor* const actor : actors)
 	{
 		if (!player && actor->IsTypeOf<Player>())
@@ -291,38 +288,33 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 			player = actor->As<Player>();
 			continue;
 		}
-
-		if (actor->IsTypeOf<EnemyBullet>())
-		{
-			bullets.emplace_back(actor);
-		}
 	}
 
-	if (bullets.size() == 0 || !player)
+	if (!player)
 	{
 		return;
 	}
 
-
 	// 충돌판정.
-	//for (Actor* const bullet : bullets)
-	//{
-	//	if (bullet->TestIntersect(player))
-	//	{
-	//		// bullet에 함수 포인터 넣어서 호출하도록 수정
-	//		// bullet->Action(함수포인터);
-	//		player->SetHealth(player->GetHealth() - 1);
+	Vector2 playerPosition = player->GetPosition();
+	for (Actor* const bullet : 
+		Query(Bounds(playerPosition.x, playerPosition.y)))
+	{
+		if (bullet->IsTypeOf<EnemyBullet>() && 
+			bullet->TestIntersect(player))
+		{
+			player->SetHealth(player->GetHealth() - 1);
 
-	//		if (player->GetIsPlayerDead())
-	//		{
-	//			playerDeadPosition = player->GetPosition();
-	//			player->Destroy();
-	//			break;
-	//		}
+			if (player->GetIsPlayerDead())
+			{
+				playerDeadPosition = player->GetPosition();
+				player->Destroy();
+				break;
+			}
 
-	//		bullet->Destroy();
-	//	}
-	//}
+			bullet->Destroy();
+		}
+	}
 }
 
 void GameLevel::ProcessCollisionPlayerAndUltraEnemy()

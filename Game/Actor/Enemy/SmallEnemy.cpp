@@ -97,9 +97,9 @@ void SmallEnemy::Tick(float deltaTime)
 
 	// Åº¾à ¹ß»ç
 	GetOwner()->AddNewActor(
-		new GuidedBullet(
+		new EnemyBullet(
 			Vector2(position.x + width / 2, position.y),
-			player->As<Player>(),
+			//player->As<Player>(),
 			Util::RandomRange(10.0f, 20.0f)
 		)
 	);

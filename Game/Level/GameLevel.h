@@ -46,7 +46,7 @@ private:
 	char scoreString[128] = {};
 
 	// 대형 유닛 소환을 위한 목표 점수
-	int targetScoreForShowingUltraEnemy = 0;
+	int targetScoreForShowingUltraEnemy = 5;
 
 	// 대형 유닛 소환 여부
 	bool hasShownUltraEnemy = false;
