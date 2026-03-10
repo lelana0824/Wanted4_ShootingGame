@@ -36,26 +36,13 @@ namespace Wanted
 	}
 	void Level::Tick(float deltaTime)
 	{
+		delete tree;
+		tree = new QuadTree(Bounds(0, 0, 1000, 1000));
+
 		// 액터에 이벤트 흘리기
 		for (Actor* actor : actors)
 		{
 			actor->Tick(deltaTime);
-		}
-	}
-	void Level::Draw()
-	{
-		delete tree;
-		tree = new QuadTree(Bounds(0, 0, 1000, 1000));
-
-		// 액터 순회하면서 Draw 함수 호출 및 탐색트리 초기화
-		for (Actor* const actor : actors)
-		{
-			if (!actor->IsActive())
-			{
-				continue;
-			}
-
-			actor->Draw();
 
 			Vector2 position = actor->GetPosition();
 			tree->Insert(new QuadTreeNode(
@@ -64,6 +51,19 @@ namespace Wanted
 					actor->GetWidth(), 1
 				), 0, actor
 			));
+		}
+	}
+	void Level::Draw()
+	{
+		// 액터 순회하면서 Draw 함수 호출
+		for (Actor* const actor : actors)
+		{
+			if (!actor->IsActive())
+			{
+				continue;
+			}
+
+			actor->Draw();
 		}
 	}
 	void Level::AddNewActor(Actor* newActor)
