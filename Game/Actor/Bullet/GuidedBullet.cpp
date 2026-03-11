@@ -12,8 +12,6 @@ GuidedBullet::GuidedBullet(
 	:super(position, moveSpeed, color), target(target)
 {
 	startNode = new Node(position.x, position.y);
-	
-	// 타겟 위치를 받아야 함.
 	goalNode = new Node(target->GetPosition().x, 
 		target->GetPosition().y);
 
@@ -45,11 +43,10 @@ void GuidedBullet::Tick(float deltaTime)
 		findedPath = true;
 	}
 
+	// 다음 목적지가 없음을 뜻함.
 	if (nextPosition == Vector2::Zero)
 	{
 		// 충돌 처리 여부 확인.
-		// 얘는 또 여기있네. 근데 굳이 트리로 계산할 필요는 없다.
-
 		if (TestIntersect(target->As<Actor>()))
 		{
 			target->SetHealth(target->GetHealth() - 1);
@@ -76,8 +73,6 @@ void GuidedBullet::Tick(float deltaTime)
 	else
 	{
 		// 다르면 nextPosition을 향해 이동해야함.
-
-		// A* 알고리즘 적용
 
 		xPosition = nextPosition.x + moveSpeed * deltaTime;
 		yPosition = nextPosition.y + moveSpeed * deltaTime;

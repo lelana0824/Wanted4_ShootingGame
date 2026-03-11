@@ -280,18 +280,17 @@ void GameLevel::ProcessCollisionPlayerBulletAndEnemy()
 
 void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 {
-	for (Actor* const actor : actors)
-	{
-		if (!player && actor->IsTypeOf<Player>())
-		{
-			player = actor->As<Player>();
-			break;
-		}
-	}
 
 	if (!player)
 	{
-		return;
+		for (Actor* const actor : actors)
+		{
+			if (!player && actor->IsTypeOf<Player>())
+			{
+				player = actor->As<Player>();
+				break;
+			}
+		}
 	}
 
 	// 충돌판정.
@@ -318,20 +317,16 @@ void GameLevel::ProcessCollisionPlayerAndEnemyBullet()
 
 void GameLevel::ProcessCollisionPlayerAndItem()
 {
-	Player* player = nullptr;
-
-	for (Actor* const actor : actors)
-	{
-		if (!player && actor->IsTypeOf<Player>())
-		{
-			player = actor->As<Player>();
-			break;
-		}
-	}
-
 	if (!player)
 	{
-		return;
+		for (Actor* const actor : actors)
+		{
+			if (!player && actor->IsTypeOf<Player>())
+			{
+				player = actor->As<Player>();
+				break;
+			}
+		}
 	}
 
 	Vector2 playerPosition = player->GetPosition();
