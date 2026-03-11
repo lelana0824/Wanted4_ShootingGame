@@ -15,7 +15,7 @@ Obstacle::Obstacle(int width, int height)
 			body.emplace_back(
 				new Actor(
 					"1",
-					Vector2(j, 50 + i),
+					Vector2(j + 5, 10 + i),
 					Color::White
 				)
 			);

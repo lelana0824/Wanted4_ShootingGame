@@ -5,7 +5,7 @@
 #include "Actor/Bullet/EnemyBullet.h"
 #include "Util/Util.h"
 #include "Engine/Engine.h"
-#include "Actor/Effects/UltraEnemyDamagedEffect.h"
+#include "Actor/Effects/EnemyDestroyEffect.h"
 #include "Actor/Effects/DamagedEffect.h"
 
 #include <string>
@@ -107,15 +107,26 @@ void UltraEnemy::OnDamaged()
         for (Enemy* const enemy : enemies)
         {
             enemy->Destroy();
-
+            GetOwner()->AddNewActor(new EnemyDestroyEffect(enemy->GetPosition()));
         }
 
-        GetOwner()->AddNewActor(new UltraEnemyDamagedEffect(enemies));
         Destroy();
     }
     else
     {
-        GetOwner()->AddNewActor(new UltraEnemyDamagedEffect(enemies));
+        for (Enemy* const enemy : enemies)
+        {
+            GetOwner()->AddNewActor(
+                new DamagedEffect(
+                    enemy->GetPosition(),
+                    Vector2(
+                        direction == MoveDirection::Left ? -1 : 1,
+                        0
+                    ),
+                    moveSpeed
+                )
+            );
+        }
     }
 
 }
